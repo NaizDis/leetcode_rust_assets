@@ -1,4 +1,4 @@
-use std::num;
+use std::{collections::HashSet, num};
 
 pub fn find_max_average(nums: Vec<i32>, k: i32) -> f64 {
     let ku = k as usize;
@@ -47,6 +47,23 @@ pub fn longest_ones(nums: Vec<i32>, k: i32) -> i32 {
         }
         let w = i - l + 1;
         max_len = max_len.max(w);
+    }
+    max_len as i32
+}
+pub fn length_of_longest_substring(s: String) -> i32 {
+    let mut l = 0;
+    let mut max_len = 0;
+    let mut stt: HashSet<char> = HashSet::new();
+
+    for (i, c) in s.chars().enumerate() {
+        while stt.contains(&c) {
+            stt.remove(&(s.as_bytes()[l] as char));
+            l += 1;
+        }
+
+        let w = i - l + 1;
+        max_len = max_len.max(w);
+        stt.insert(c);
     }
     max_len as i32
 }
