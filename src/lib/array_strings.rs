@@ -1,4 +1,4 @@
-use std::{cmp, collections::HashMap};
+use std::{cmp, collections::HashMap, i32::MIN};
 pub fn merge_alternately(word1: String, word2: String) -> String {
     word1
         .chars()
@@ -239,4 +239,16 @@ pub fn larg_arith_sub(nums: Vec<i32>) -> i32 {
         i += 1;
     }
     res
+}
+pub fn max_sub_array(nums: Vec<i32>) -> i32 {
+    let mut max: i32 = MIN;
+    let mut sum = 0;
+    for i in nums {
+        sum += i;
+        max = max.max(sum);
+        if sum < 0 {
+            sum = 0;
+        }
+    }
+    max
 }
