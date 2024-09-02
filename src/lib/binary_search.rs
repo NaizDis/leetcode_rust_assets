@@ -155,3 +155,27 @@ pub fn k_test(pp: &Vec<i32>, hr: i32, k: i32) -> bool {
     }
     hrs <= hr
 }
+pub fn my_sqrt(x: i32) -> i32 {
+    if x <= 1 {
+        return x;
+    }
+    let (mut l, mut h) = (1, x);
+    let mut m = -1;
+    let mut res = 0;
+    while h >= l {
+        m = (l + h) / 2;
+        match (m).cmp(&(x / m)) {
+            Ordering::Less => {
+                l = m + 1;
+                res = m;
+            }
+            Ordering::Greater => {
+                h = m - 1;
+            }
+            Ordering::Equal => {
+                return m;
+            }
+        }
+    }
+    res
+}

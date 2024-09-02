@@ -1,4 +1,4 @@
-use std::{cmp, collections::HashMap, i32::MIN};
+use std::{cmp, collections::HashMap, i32::MIN, usize};
 pub fn merge_alternately(word1: String, word2: String) -> String {
     word1
         .chars()
@@ -251,4 +251,11 @@ pub fn max_sub_array(nums: Vec<i32>) -> i32 {
         }
     }
     max
+}
+pub fn fib(n: i32) -> i32 {
+    let mut arr = vec![0, 1];
+    for i in 2..=n as usize {
+        arr.push(arr[i - 1] + arr[i - 2]);
+    }
+    arr[n as usize]
 }

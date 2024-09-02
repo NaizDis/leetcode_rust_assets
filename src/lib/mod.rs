@@ -4,4 +4,5 @@ pub mod hashmap;
 pub mod linklist;
 pub mod sliding_win;
 pub mod stack;
+pub mod trees;
 pub mod two_pointer;
