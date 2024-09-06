@@ -100,3 +100,30 @@ pub fn is_same_tree(p: Option<Rc<RefCell<TreeNode>>>, q: Option<Rc<RefCell<TreeN
     }
     balanced(p, q)
 }
+pub fn is_symmetric(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
+    fn same(p: Option<Rc<RefCell<TreeNode>>>, q: Option<Rc<RefCell<TreeNode>>>) -> bool {
+        match (p, q) {
+            (None, None) => true,
+            (Some(_), None) | (None, Some(_)) => false,
+            (Some(p), Some(q)) => {
+                if p.borrow().val != q.borrow().val {
+                    return false;
+                }
+                same(p.borrow().left.clone(), q.borrow().right.clone())
+                    && same(p.borrow().right.clone(), q.borrow().left.clone())
+            }
+        }
+    }
+    same(root.clone(), root)
+}
+pub fn has_path_sum(root: Option<Rc<RefCell<TreeNode>>>, sum: i32) -> bool {
+    if let Some(n) = root {
+        let node = n.borrow();
+        if node.left.is_none() && node.right.is_none() && node.val == sum {
+            return true;
+        }
+        return has_path_sum(node.left.clone(), sum - node.val)
+            || has_path_sum(node.right.clone(), sum - node.val);
+    }
+    false
+}

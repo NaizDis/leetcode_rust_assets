@@ -1,6 +1,9 @@
 mod lib;
-use lib::two_pointer::is_palindrome;
+use lib::array_strings::{
+    chosen_one_dcode, death_note_dcode, master_magic_dcode, paint_wall_dcode, rnd_file_dcode,
+};
+
 fn main() {
-    let mut s = "race a car".to_string();
-    is_palindrome(s);
+    let res = death_note_dcode(4, 2);
+    println!("{:?}", res);
 }

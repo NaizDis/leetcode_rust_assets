@@ -1,4 +1,9 @@
-use std::{cmp, collections::HashMap, i32::MIN, usize};
+use std::{
+    cmp::{self, Ordering},
+    collections::HashMap,
+    i32::MIN,
+    usize,
+};
 pub fn merge_alternately(word1: String, word2: String) -> String {
     word1
         .chars()
@@ -258,4 +263,78 @@ pub fn fib(n: i32) -> i32 {
         arr.push(arr[i - 1] + arr[i - 2]);
     }
     arr[n as usize]
+}
+pub fn master_magic_dcode(n: i32, x: i32, y: i32, diff: Vec<i32>) -> i32 {
+    let mut res = 0;
+    for i in diff {
+        match (i * x).cmp(&y) {
+            Ordering::Greater | Ordering::Equal => res += y,
+            Ordering::Less => res += i * x,
+        }
+    }
+    res
+}
+pub fn rnd_file_dcode(nums: Vec<i32>) -> (i32, i32) {
+    let mut nums: Vec<i32> = nums.clone();
+    nums.sort_by(|a, b| b.abs().cmp(&a.abs()));
+    let (mut a, mut b) = (0, 0);
+    let mut turn = true;
+    for i in nums {
+        match turn {
+            true => {
+                if i > 0 {
+                    a += i;
+                } else {
+                    b += i;
+                }
+            }
+            false => {
+                if i > 0 {
+                    b += i;
+                } else {
+                    a += i;
+                }
+            }
+        }
+        turn = !turn;
+    }
+    (a, b)
+}
+pub fn chosen_one_dcode(strr: String) -> char {
+    let mut map = HashMap::new();
+    for i in strr.chars() {
+        map.entry(i).and_modify(|e| *e += 1).or_insert(1);
+    }
+    *map.iter()
+        .max_by(|a, b| a.1.cmp(&b.1))
+        .map(|(x, _v)| x)
+        .unwrap()
+}
+pub fn paint_wall_dcode(strr: String) -> bool {
+    let chrs: Vec<char> = strr.chars().collect();
+    let n = strr.len();
+    let (mut l, mut r) = (0, n - 1);
+    let mut temp = vec!['0'; n];
+
+    while r > l && l + 1 != r {
+        while l < n && chrs[l] != '1' {
+            l += 1;
+        }
+        while chrs[r] != '1' && r > 0 {
+            r -= 1;
+        }
+        if r <= l {
+            break;
+        }
+        temp[r] = '1';
+        temp[l] = '1';
+        r -= 1;
+        l += 1;
+    }
+    chrs == temp
+}
+pub fn death_note_dcode(l: i32, r: i32) -> bool {
+    let smll = l.min(r);
+    let big = l.max(r);
+    (l + r) % 3 == 0 && smll >= big / 2
 }
