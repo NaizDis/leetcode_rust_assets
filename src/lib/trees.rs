@@ -17,8 +17,10 @@ impl TreeNode {
     }
 }
 use std::cell::RefCell;
-use std::mem;
+use std::collections::VecDeque;
+use std::num::NonZero;
 use std::rc::Rc;
+use std::{mem, usize};
 
 use super::stack;
 type TreeLink = Option<Rc<RefCell<TreeNode>>>;
@@ -126,4 +128,140 @@ pub fn has_path_sum(root: Option<Rc<RefCell<TreeNode>>>, sum: i32) -> bool {
             || has_path_sum(node.right.clone(), sum - node.val);
     }
     false
+}
+pub fn is_subtree(
+    root: Option<Rc<RefCell<TreeNode>>>,
+    sub_root: Option<Rc<RefCell<TreeNode>>>,
+) -> bool {
+    if root == sub_root {
+        return true;
+    }
+    if let Some(node) = root {
+        let node = node.borrow();
+        is_subtree(node.left.clone(), sub_root.clone())
+            || is_subtree(node.right.clone(), sub_root.clone())
+    } else {
+        return false;
+    }
+}
+pub fn level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
+    if root.is_none() {
+        return vec![];
+    }
+    let mut que = VecDeque::from([root.clone()]);
+    let mut res: Vec<Vec<i32>> = vec![];
+    while !que.is_empty() {
+        let mut level = vec![];
+        let n = que.len();
+        for _ in 0..n {
+            let crr = que.pop_front().unwrap();
+            if let Some(node) = crr {
+                let node = node.borrow();
+                level.push(node.val);
+                if node.left.is_some() {
+                    que.push_back(node.left.clone());
+                }
+                if node.right.is_some() {
+                    que.push_back(node.right.clone());
+                }
+            }
+        }
+        res.push(level);
+    }
+    res
+}
+pub fn kth_smallest(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
+    let mut res_arr = vec![];
+    fn dfs(root: Option<Rc<RefCell<TreeNode>>>, arr: &mut Vec<i32>) {
+        if let Some(p) = root {
+            let node = p.borrow();
+            dfs(node.left.clone(), arr);
+            arr.push(node.val);
+            dfs(node.right.clone(), arr);
+        }
+    }
+    dfs(root, res_arr.as_mut());
+    res_arr[(k - 1) as usize]
+}
+pub fn get_minimum_difference(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+    let mut prev = vec![-1];
+    let mut min_dist = vec![i32::MAX];
+    fn dfs(root: Option<Rc<RefCell<TreeNode>>>, min: &mut Vec<i32>, prev: &mut Vec<i32>) {
+        if let Some(p) = root {
+            let node = p.borrow();
+            dfs(node.left.clone(), min, prev);
+            if !prev[0] != -1 {
+                min[0] = min[0].min((node.val - prev[0]).abs());
+            }
+            prev[0] = node.val;
+            dfs(node.right.clone(), min, prev);
+        }
+    }
+    dfs(root, min_dist.as_mut(), prev.as_mut());
+    min_dist[0]
+}
+pub fn is_valid_bst(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
+    fn dfs(root: Option<Rc<RefCell<TreeNode>>>, min: i64, max: i64) -> bool {
+        if let Some(p) = root {
+            let node = p.borrow();
+            if node.val as i64 <= min || node.val as i64 >= max {
+                return false;
+            }
+            return dfs(node.left.clone(), min, node.val as i64)
+                && dfs(node.right.clone(), node.val as i64, max);
+        }
+        return true;
+    }
+    dfs(root, i64::MIN, i64::MAX)
+}
+use std::cmp::Ordering;
+pub fn lowest_common_ancestor(
+    root: Option<Rc<RefCell<TreeNode>>>,
+    p: Option<Rc<RefCell<TreeNode>>>,
+    q: Option<Rc<RefCell<TreeNode>>>,
+) -> Option<Rc<RefCell<TreeNode>>> {
+    let mut cur = root;
+    let p = p.unwrap().borrow().val;
+    let q = q.unwrap().borrow().val;
+
+    while let Some(n) = cur {
+        let val = n.borrow().val;
+        match (val.cmp(&p), val.cmp(&q)) {
+            (Ordering::Greater, Ordering::Greater) => cur = n.borrow().left.clone(),
+            (Ordering::Less, Ordering::Less) => cur = n.borrow().right.clone(),
+            _ => return Some(n.clone()),
+        };
+    }
+    None
+}
+use std::collections::HashMap;
+
+#[derive(Default)]
+struct Trie {
+    children: HashMap<char, Trie>,
+    is_leaf: bool,
+}
+
+impl Trie {
+    fn new() -> Self {
+        Trie::default()
+    }
+
+    fn insert(&mut self, word: String) {
+        word.chars()
+            .fold(self, |node, c| node.children.entry(c).or_default())
+            .is_leaf = true;
+    }
+
+    fn get(&self, word: String) -> Option<&Trie> {
+        word.chars().try_fold(self, |node, c| node.children.get(&c))
+    }
+
+    fn search(&self, word: String) -> bool {
+        self.get(word).map_or(false, |node| node.is_leaf)
+    }
+
+    fn starts_with(&self, prefix: String) -> bool {
+        self.get(prefix).is_some()
+    }
 }

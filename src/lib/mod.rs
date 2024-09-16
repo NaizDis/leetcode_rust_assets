@@ -1,7 +1,9 @@
 pub mod array_strings;
 pub mod binary_search;
 pub mod hashmap;
+pub mod heaps;
 pub mod linklist;
+pub mod recursive_backtracking;
 pub mod sliding_win;
 pub mod stack;
 pub mod trees;
