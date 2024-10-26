@@ -1,5 +1,7 @@
 pub mod array_strings;
 pub mod binary_search;
+pub mod dp;
+pub mod graphs;
 pub mod hashmap;
 pub mod heaps;
 pub mod linklist;

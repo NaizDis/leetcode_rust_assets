@@ -180,7 +180,7 @@ pub fn exist(mut board: Vec<Vec<char>>, word: String) -> bool {
     let w = word.len();
 
     if m == 1 && n == 1 {
-        return board[0][0].to_string() == word;
+        return board[0][0] == word;
     }
     fn dfs(
         pos: (usize, usize),
