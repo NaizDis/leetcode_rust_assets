@@ -1,13 +1,13 @@
 use std::usize;
 
-pub fn cal_points(operations: Vec<String>) -> i32 {
+pub fn cal_points(operations: vec<string>) -> i32 {
     let mut rec = vec![];
     for i in operations {
         match i.as_str() {
-            "C" => {
+            "c" => {
                 rec.pop();
             }
-            "D" => {
+            "d" => {
                 let rs = rec.iter().rev().next().unwrap();
                 rec.push(rs * 2);
             }
@@ -24,8 +24,8 @@ pub fn cal_points(operations: Vec<String>) -> i32 {
     }
     rec.iter().fold(0, |a, c| a + c)
 }
-pub fn is_valid(s: String) -> bool {
-    let token: Vec<char> = s.chars().collect();
+pub fn is_valid(s: string) -> bool {
+    let token: vec<char> = s.chars().collect();
     let mut stack = vec![];
     for i in token {
         if stack.len() == 0 && (i == ')' || i == '}' || i == ']') {
@@ -58,7 +58,7 @@ pub fn is_valid(s: String) -> bool {
     }
     stack.is_empty()
 }
-pub fn eval_rpn(tokens: Vec<String>) -> i32 {
+pub fn eval_rpn(tokens: vec<string>) -> i32 {
     let mut stact = vec![];
     for i in tokens {
         match i.as_str() {
@@ -79,9 +79,9 @@ pub fn eval_rpn(tokens: Vec<String>) -> i32 {
     }
     stact[0]
 }
-pub fn daily_temperatures(temperatures: Vec<i32>) -> Vec<i32> {
+pub fn daily_temperatures(temperatures: vec<i32>) -> vec<i32> {
     // let mut res = vec![];
-    //Time - o(n^2) | Space - o(1)
+    //time - o(n^2) | space - o(1)
     // for i in 0..temperatures.len() {
     //     for j in i + 1..temperatures.len() {
     //         if temperatures[j] > temperatures[i] {
@@ -93,10 +93,10 @@ pub fn daily_temperatures(temperatures: Vec<i32>) -> Vec<i32> {
     //         res.push(0);
     //     }
     // }
-    //Time - o(n) | Space - o(n)
+    //time - o(n) | space - o(n)
     let n = temperatures.len();
     let mut res = vec![0; n];
-    let mut stack: Vec<(i32, usize)> = vec![];
+    let mut stack: vec<(i32, usize)> = vec![];
 
     for (i, &t) in temperatures.iter().enumerate() {
         while !stack.is_empty() && stack[stack.len() - 1].0 < t {
@@ -108,18 +108,18 @@ pub fn daily_temperatures(temperatures: Vec<i32>) -> Vec<i32> {
 
     res
 }
-struct MinStack {
-    stack: Vec<i32>,
-    min_stack: Vec<i32>,
+struct minstack {
+    stack: vec<i32>,
+    min_stack: vec<i32>,
 }
 
 /**
  * `&self` means the method takes an immutable reference.
- * If you need a mutable reference, change it to `&mut self` instead.
+ * if you need a mutable reference, change it to `&mut self` instead.
  */
-impl MinStack {
-    fn new() -> Self {
-        MinStack {
+impl minstack {
+    fn new() -> self {
+        minstack {
             stack: vec![],
             min_stack: vec![],
         }
@@ -148,4 +148,38 @@ impl MinStack {
     fn get_min(&self) -> i32 {
         *self.min_stack.iter().last().unwrap()
     }
+}
+pub fn find132pattern(nums: vec<i32>) -> bool {
+    //o(n^3) - BruteForce
+    // let res: bool = false;
+    // let len: usize = nums.len();
+    // for (ct1, i) in nums.iter().enumerate() {
+    //     if ct1 < len - 2 {
+    //         for (ct2, j) in nums.iter().skip(ct1 + 1).enumerate() {
+    //             if j > i {
+    //                 for k in nums.iter().skip(ct2 + 1) {
+    //                     if k > i && k < j {
+    //                         return true;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    // res
+    // o(n) - Stack
+    // -- stack top store J
+    let mut stk: Vec<i32> = vec![];
+    //Td store K
+    let mut td = std::i32::MIN;
+    for i in nums.iter().rev() {
+        if i < &td {
+            return true;
+        }
+        while !stk.is_empty() && stk.last().unwrap() < i {
+            td = stk.pop().unwrap();
+        }
+        stk.push(*i);
+    }
+    false
 }

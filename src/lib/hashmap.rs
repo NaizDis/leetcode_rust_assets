@@ -120,6 +120,7 @@ pub fn longest_consecutive(mut nums: Vec<i32>) -> i32 {
 //Simpler Use take_while And Count
 pub fn longest_consecutive2(nums: Vec<i32>) -> i32 {
     let num_set: HashSet<_> = nums.into_iter().collect();
+    let mut map :HashMap<> = nums.into_iter().
     let mut ans = 0;
     for &num in &num_set {
         if !num_set.contains(&(num - 1)) {
@@ -128,4 +129,30 @@ pub fn longest_consecutive2(nums: Vec<i32>) -> i32 {
         }
     }
     ans as i32
+}
+pub fn maximum_length(nums: Vec<i32>) -> i32 {
+    let nums = nums.iter().map(|&x| x as i64).collect::<Vec<_>>();
+    let mut map = HashMap::new();
+    let mut ans = 1;
+    for i in &nums {
+        map.entry(i).and_modify(|e| *e += 1).or_insert(1);
+    }
+    for (&n,c) in map.clone().into_iter(){
+        if n==1{
+            ans = ans.max(c - (c %2==0) as i64);
+        }
+        else if c>1 {
+            let mut n_ans = 1;
+            let mut n = n*n;
+            while let  Some(&c)=map.get(&n){
+                n_ans+=2;
+                if c==1{
+                    break;
+                }
+                n*=n;
+            }
+            ans= ans.max(n_ans);
+        }
+    }
+    ans as _
 }

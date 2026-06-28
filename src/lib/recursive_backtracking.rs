@@ -174,53 +174,53 @@ pub fn generate_parenthesis(n: i32) -> Vec<String> {
     dfs(n, &mut sol, &mut res, 0, 0);
     res
 }
-pub fn exist(mut board: Vec<Vec<char>>, word: String) -> bool {
-    let m = board.len();
-    let n = board[0].len();
-    let w = word.len();
-
-    if m == 1 && n == 1 {
-        return board[0][0] == word;
-    }
-    fn dfs(
-        pos: (usize, usize),
-        id: usize,
-        m: usize,
-        n: usize,
-        len_w: usize,
-        board: &mut Vec<Vec<char>>,
-        word: &String,
-    ) -> bool {
-        let (i, j) = pos;
-
-        if id == len_w {
-            return true;
-        }
-        if board[i][j] != word.chars().nth(id).unwrap() {
-            return false;
-        }
-
-        let char = board[i][j];
-        board[i][j] = '#';
-
-        for (i_off, j_off) in vec![(0, 1), (1, 0), (0, -1), (-1, 0)] {
-            let (r, c) = ((i as i32 + i_off) as usize, (j as i32 + j_off) as usize);
-            if (0..m).contains(&r) && (0..n).contains(&c) {
-                if dfs((r, c), id + 1, m, n, len_w, board, word) {
-                    return true;
-                }
-            }
-        }
-        board[i][j] = char;
-        return false;
-    }
-
-    for i in 0..m {
-        for j in 0..n {
-            if dfs((i, j), 0, m, n, w, &mut board, &word) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
+// pub fn exist(mut board: Vec<Vec<char>>, word: String) -> bool {
+//     let m = board.len();
+//     let n = board[0].len();
+//     let w = word.len();
+//
+//     if m == 1 && n == 1 {
+//         return board[0][0] == word;
+//     }
+//     fn dfs(
+//         pos: (usize, usize),
+//         id: usize,
+//         m: usize,
+//         n: usize,
+//         len_w: usize,
+//         board: &mut Vec<Vec<char>>,
+//         word: &String,
+//     ) -> bool {
+//         let (i, j) = pos;
+//
+//         if id == len_w {
+//             return true;
+//         }
+//         if board[i][j] != word.chars().nth(id).unwrap() {
+//             return false;
+//         }
+//
+//         let char = board[i][j];
+//         board[i][j] = '#';
+//
+//         for (i_off, j_off) in vec![(0, 1), (1, 0), (0, -1), (-1, 0)] {
+//             let (r, c) = ((i as i32 + i_off) as usize, (j as i32 + j_off) as usize);
+//             if (0..m).contains(&r) && (0..n).contains(&c) {
+//                 if dfs((r, c), id + 1, m, n, len_w, board, word) {
+//                     return true;
+//                 }
+//             }
+//         }
+//         board[i][j] = char;
+//         return false;
+//     }
+//
+//     for i in 0..m {
+//         for j in 0..n {
+//             if dfs((i, j), 0, m, n, w, &mut board, &word) {
+//                 return true;
+//             }
+//         }
+//     }
+//     return false;
+// }

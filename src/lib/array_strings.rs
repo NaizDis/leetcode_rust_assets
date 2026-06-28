@@ -1,7 +1,9 @@
 use std::{
+    cell::RefCell,
     cmp::{self, Ordering},
     collections::HashMap,
     i32::MIN,
+    rc::Rc,
     usize,
 };
 pub fn merge_alternately(word1: String, word2: String) -> String {
@@ -25,7 +27,6 @@ pub fn roman_to_int(s: String) -> i32 {
         ('C', 100),
         ('D', 500),
         ('M', 1000),
-        ('I', 1),
     ]);
 
     for i in 0..chars.len() - 1 {
@@ -40,15 +41,18 @@ pub fn roman_to_int(s: String) -> i32 {
 }
 
 pub fn is_subsequence(s: String, t: String) -> bool {
-    let mut chrs: Vec<char> = s.chars().collect();
-    for i in t.chars() {
-        if chrs.is_empty() {
-            break;
-        } else if chrs[0] == i {
-            chrs.remove(0);
+    let s_chars: Vec<char> = s.chars().collect();
+    let t_chars: Vec<char> = t.chars().collect();
+    let (mut i, mut j) = (0, 0); // Pointers for s and t
+
+    while i < s_chars.len() && j < t_chars.len() {
+        if s_chars[i] == t_chars[j] {
+            i += 1; // Move s pointer if characters match
         }
+        j += 1; // Always move t pointer
     }
-    chrs.is_empty()
+
+    i == s_chars.len() // If i reached the end of s, it's a subsequence
 }
 
 pub fn max_profit(prices: Vec<i32>) -> i32 {
@@ -155,65 +159,46 @@ pub fn find_closest_number(nums: Vec<i32>) -> i32 {
 }
 
 pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
-    let mut res = vec![];
-    let n = matrix[0].len() * matrix.len();
-    let mut i = 0;
-    let mut j = 0;
-    enum Dir {
-        UP,
-        RIGHT,
-        DOWN,
-        LEFT,
+    if matrix.is_empty() || matrix[0].is_empty() {
+        return vec![];
     }
-    let mut dir = Dir::RIGHT;
 
-    let mut r_wall = matrix[0].len();
-    let mut l_wall: i32 = -1;
-    let mut floor = matrix.len();
-    let mut ceil = 0;
+    let mut res = Vec::new();
+    let rows = matrix.len();
+    let cols = matrix[0].len();
 
-    while res.len() != n {
-        match dir {
-            Dir::RIGHT => {
-                while j < r_wall {
-                    res.push(matrix[i][j]);
-                    j += 1;
-                }
-                i += 1;
-                j -= 1;
-                r_wall -= 1;
-                dir = Dir::DOWN;
+    let mut top = 0;
+    let mut bottom = rows as i32 - 1;
+    let mut left = 0;
+    let mut right = cols as i32 - 1;
+
+    while top <= bottom && left <= right {
+        // Traverse right
+        for c in left..=right {
+            res.push(matrix[top as usize][c as usize]);
+        }
+        top += 1;
+
+        // Traverse down
+        for r in top..=bottom {
+            res.push(matrix[r as usize][right as usize]);
+        }
+        right -= 1;
+
+        // Traverse left, if there are still rows to traverse
+        if top <= bottom {
+            for c in (left..=right).rev() {
+                res.push(matrix[bottom as usize][c as usize]);
             }
-            Dir::DOWN => {
-                while i < floor {
-                    res.push(matrix[i][j]);
-                    i += 1;
-                }
-                i -= 1;
-                j -= 1;
-                floor -= 1;
-                dir = Dir::LEFT;
+            bottom -= 1;
+        }
+
+        // Traverse up, if there are still columns to traverse
+        if left <= right {
+            for r in (top..=bottom).rev() {
+                res.push(matrix[r as usize][left as usize]);
             }
-            Dir::UP => {
-                while i > ceil {
-                    res.push(matrix[i][j]);
-                    i -= 1;
-                }
-                i += 1;
-                j += 1;
-                ceil += 1;
-                dir = Dir::LEFT;
-            }
-            Dir::LEFT => {
-                while j as i32 > l_wall {
-                    res.push(matrix[i][j]);
-                    j -= 1;
-                }
-                i -= 1;
-                j += 1;
-                l_wall += 1;
-                dir = Dir::UP;
-            }
+            left += 1;
         }
     }
     res
@@ -233,17 +218,23 @@ pub fn rotate(matrix: &mut Vec<Vec<i32>>) {
     }
 }
 pub fn larg_arith_sub(nums: Vec<i32>) -> i32 {
-    let mut res = 2;
-    let mut cur = 2;
-    let mut i = 1;
-    while i < nums.len() - 1 {
-        if nums[i] - nums[i - 1] == nums[i + 1] - nums[i] {
-            cur += 1;
-        }
-        res = cmp::max(res, cur);
-        i += 1;
+    let n = nums.len();
+    if n <= 2 {
+        return n as i32; // An array of 0, 1, or 2 elements is trivially an arithmetic subarray
     }
-    res
+
+    let mut max_len = 2;
+    let mut current_len = 2;
+    // Iterate from the third element to check for arithmetic progression
+    for i in 2..n {
+        if nums[i] - nums[i - 1] == nums[i - 1] - nums[i - 2] {
+            current_len += 1;
+        } else {
+            current_len = 2; // Reset if the progression breaks
+        }
+        max_len = cmp::max(max_len, current_len);
+    }
+    max_len
 }
 pub fn max_sub_array(nums: Vec<i32>) -> i32 {
     let mut max: i32 = MIN;
@@ -316,25 +307,118 @@ pub fn paint_wall_dcode(strr: String) -> bool {
     let (mut l, mut r) = (0, n - 1);
     let mut temp = vec!['0'; n];
 
-    while r > l && l + 1 != r {
-        while l < n && chrs[l] != '1' {
+    // Loop until pointers meet or cross, ensuring all characters are considered
+    while l <= r {
+        let mut found_one_at_l = false;
+        let mut found_one_at_r = false;
+
+        // Find the first '1' from the left, or reach r
+        while l <= r && chrs[l] == '0' {
+            // If we find a '0', the corresponding right side must also be a '0'
+            // for symmetry, if we haven't processed it yet
+            if temp[n - 1 - l] != '0' { // Check if the symmetric position was '1' already
+                return false; // Asymmetry found
+            }
             l += 1;
         }
-        while chrs[r] != '1' && r > 0 {
+        if l <= r && chrs[l] == '1' {
+            found_one_at_l = true;
+        }
+
+        // Find the first '1' from the right, or reach l
+        while l <= r && chrs[r] == '0' {
+            // If we find a '0', the corresponding left side must also be a '0'
+            // for symmetry, if we haven't processed it yet
+            if temp[n - 1 - r] != '0' { // Check if the symmetric position was '1' already
+                return false; // Asymmetry found
+            }
             r -= 1;
         }
-        if r <= l {
-            break;
+        if l <= r && chrs[r] == '1' {
+            found_one_at_r = true;
         }
-        temp[r] = '1';
-        temp[l] = '1';
-        r -= 1;
-        l += 1;
+
+        // If '1's were found symmetrically, mark them in temp
+        if found_one_at_l && found_one_at_r && l <= r {
+            temp[l] = '1';
+            temp[r] = '1';
+            l += 1;
+            r -= 1;
+        } else if found_one_at_l || found_one_at_r {
+            // If only one side found a '1' (or l == r and only one '1' found in middle)
+            // This indicates asymmetry unless it's the very middle for an odd length string
+            if l == r && found_one_at_l && !found_one_at_r { // Middle element '1'
+                temp[l] = '1';
+                l += 1;
+                r -= 1;
+            } else {
+                return false; // Asymmetry (e.g., '10', '01')
+            }
+        }
     }
+    
+    // After processing, the original string must exactly match the constructed 'temp'
+    // This ensures all '0's were handled correctly and only symmetric '1's were "painted".
     chrs == temp
 }
+
 pub fn death_note_dcode(l: i32, r: i32) -> bool {
     let smll = l.min(r);
     let big = l.max(r);
     (l + r) % 3 == 0 && smll >= big / 2
+}
+
+pub fn pascal_tri(rowId: u32, _row: Vec<u32>) -> Vec<u32> { // _row is ignored as we calculate the row from scratch
+    if rowId == 0 {
+        return vec![1];
+    }
+
+    let mut prev_row = vec![1]; // Start with row 0
+
+    for _k in 1..=rowId { // Iterate from row 1 up to rowId
+        let mut next_row = vec![1]; // Each row starts with 1
+        for i in 0..prev_row.len() - 1 {
+            next_row.push(prev_row[i] + prev_row[i + 1]);
+        }
+        next_row.push(1); // Each row ends with 1
+        prev_row = next_row;
+    }
+    prev_row // Return the calculated rowId-th row
+}
+
+struct Node {
+    key: i32,
+    value: i32,
+    next: Option<Nodevalue>,
+    prev: Option<Nodevalue>,
+}
+type Nodevalue = Rc<RefCell<Node>>;
+
+#[derive(Default)]
+struct LRUCache {
+    hash: HashMap<i32, Nodevalue>,
+    cap: usize,
+    head: Option<Nodevalue>,
+    tail: Option<Nodevalue>,
+}
+
+pub fn is_trionic(nums: Vec<i32>) -> bool {
+    let n = nums.len();
+    let (mut p, mut q) = (0, n - 1);
+    if n <= 3 {
+        return false;
+    }
+    loop {
+        if nums[p] < nums[p + 1] && p < n - 1 {
+            break;
+        };
+        p = p + 1;
+    }
+    loop {
+        if nums[q] > nums[q - 1] && q > 0 {
+            break;
+        };
+        q = q - 1;
+    }
+    p < q
 }
