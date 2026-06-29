@@ -1,5 +1,7 @@
+use core::f32;
 use std::{
     collections::{HashMap, HashSet},
+    f32::INFINITY,
     num,
 };
 
@@ -127,4 +129,46 @@ pub fn check_inclusion(s1: String, s2: String) -> bool {
         }
     }
     false
+}
+
+pub fn min_window(s: String, t: String) -> String {
+    if s.len() < t.len() {
+        return String::new();
+    };
+
+    let s_b = s.as_bytes();
+    let t_b = t.as_bytes();
+    let mut t_hash = [0; 128];
+    let mut l = 0;
+    let mut min_l = 0;
+    let mut min_len: usize = usize::MAX;
+    let mut matched = t_b.len(); //unique chars matching
+
+    for &c in t_b.iter() {
+        t_hash[c as usize] += 1;
+    }
+    for r in 0..s.len() {
+        if t_hash[s_b[r] as usize] > 0 {
+            matched -= 1;
+        }
+        t_hash[s_b[r] as usize] -= 1;
+
+        while matched == 0 {
+            if (r - l + 1) < min_len {
+                min_l = l;
+                min_len = r - l + 1;
+            }
+            t_hash[s_b[l] as usize] += 1;
+            if t_hash[s_b[l] as usize] > 0 {
+                matched += 1;
+            }
+            l += 1;
+        }
+    }
+
+    if min_len == usize::MAX {
+        String::new()
+    } else {
+        s[min_l..min_l + min_len].to_string()
+    }
 }
