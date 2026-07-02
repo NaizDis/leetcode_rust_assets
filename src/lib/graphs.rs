@@ -273,3 +273,35 @@ pub fn oranges_rotting(mut grid: Vec<Vec<i32>>) -> i32 {
         -1
     }
 }
+pub fn find_safe_walk(grid: Vec<Vec<i32>>, health: i32) -> bool {
+    let (m, n) = (grid.len(), grid[0].len());
+    let mut que = VecDeque::new();
+    let mut min_dist = vec![vec![i32::MAX; n]; m];
+
+    min_dist[0][0] = grid[0][0];
+    que.push_back((grid[0][0], 0i32, 0i32));
+    while let Some((d, i, j)) = que.pop_front() {
+        if i == (m - 1) as i32 && j == (n - 1) as i32 && health - min_dist[m - 1][n - 1] > 0 {
+            return true;
+        }
+        for (i_off, j_off) in [(0, 1), (1, 0), (-1, 0), (0, -1)] {
+            let (r, c) = (i + i_off, j + j_off);
+            if 0 <= r && r < m as i32 && 0 <= c && c < n as i32 {
+                let val = grid[r as usize][c as usize];
+                if min_dist[i as usize][j as usize] + val < min_dist[r as usize][c as usize] {
+                    min_dist[r as usize][c as usize] = min_dist[i as usize][j as usize] + val;
+                    match grid[r as usize][c as usize] {
+                        0 => {
+                            que.push_front((val, r, c));
+                        }
+                        1 => {
+                            que.push_back((val, r, c));
+                        }
+                        _ => {}
+                    }
+                }
+            }
+        }
+    }
+    false
+}

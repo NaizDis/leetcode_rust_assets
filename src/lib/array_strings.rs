@@ -316,7 +316,8 @@ pub fn paint_wall_dcode(strr: String) -> bool {
         while l <= r && chrs[l] == '0' {
             // If we find a '0', the corresponding right side must also be a '0'
             // for symmetry, if we haven't processed it yet
-            if temp[n - 1 - l] != '0' { // Check if the symmetric position was '1' already
+            if temp[n - 1 - l] != '0' {
+                // Check if the symmetric position was '1' already
                 return false; // Asymmetry found
             }
             l += 1;
@@ -329,7 +330,8 @@ pub fn paint_wall_dcode(strr: String) -> bool {
         while l <= r && chrs[r] == '0' {
             // If we find a '0', the corresponding left side must also be a '0'
             // for symmetry, if we haven't processed it yet
-            if temp[n - 1 - r] != '0' { // Check if the symmetric position was '1' already
+            if temp[n - 1 - r] != '0' {
+                // Check if the symmetric position was '1' already
                 return false; // Asymmetry found
             }
             r -= 1;
@@ -347,7 +349,8 @@ pub fn paint_wall_dcode(strr: String) -> bool {
         } else if found_one_at_l || found_one_at_r {
             // If only one side found a '1' (or l == r and only one '1' found in middle)
             // This indicates asymmetry unless it's the very middle for an odd length string
-            if l == r && found_one_at_l && !found_one_at_r { // Middle element '1'
+            if l == r && found_one_at_l && !found_one_at_r {
+                // Middle element '1'
                 temp[l] = '1';
                 l += 1;
                 r -= 1;
@@ -356,7 +359,7 @@ pub fn paint_wall_dcode(strr: String) -> bool {
             }
         }
     }
-    
+
     // After processing, the original string must exactly match the constructed 'temp'
     // This ensures all '0's were handled correctly and only symmetric '1's were "painted".
     chrs == temp
@@ -368,14 +371,16 @@ pub fn death_note_dcode(l: i32, r: i32) -> bool {
     (l + r) % 3 == 0 && smll >= big / 2
 }
 
-pub fn pascal_tri(rowId: u32, _row: Vec<u32>) -> Vec<u32> { // _row is ignored as we calculate the row from scratch
+pub fn pascal_tri(rowId: u32, _row: Vec<u32>) -> Vec<u32> {
+    // _row is ignored as we calculate the row from scratch
     if rowId == 0 {
         return vec![1];
     }
 
     let mut prev_row = vec![1]; // Start with row 0
 
-    for _k in 1..=rowId { // Iterate from row 1 up to rowId
+    for _k in 1..=rowId {
+        // Iterate from row 1 up to rowId
         let mut next_row = vec![1]; // Each row starts with 1
         for i in 0..prev_row.len() - 1 {
             next_row.push(prev_row[i] + prev_row[i + 1]);
@@ -421,4 +426,39 @@ pub fn is_trionic(nums: Vec<i32>) -> bool {
         q = q - 1;
     }
     p < q
+}
+pub fn longest_palindrome(s: String) -> String {
+    let s_b = s.as_bytes();
+    let n = s.len() as i32;
+    let mut left = 0i32;
+    let mut right = 0i32;
+    let mut lonstr = "";
+    let mut len_lon = 0;
+
+    for i in 0..n {
+        //odd len string
+        right = i;
+        left = i;
+        while left >= 0 && right < n && s_b[left as usize] == s_b[right as usize] {
+            if right - left + 1 > len_lon {
+                len_lon = right - left + 1;
+                lonstr = &s[left as usize..(right + 1) as usize];
+            }
+            left -= 1;
+            right += 1;
+        }
+
+        //even len string
+        right = i + 1;
+        left = i;
+        while left >= 0 && right < n && s_b[left as usize] == s_b[right as usize] {
+            if right - left + 1 > len_lon {
+                len_lon = right - left + 1;
+                lonstr = &s[left as usize..(right + 1) as usize];
+            }
+            left -= 1;
+            right += 1;
+        }
+    }
+    String::from(lonstr)
 }

@@ -137,7 +137,7 @@ pub fn maximum_length(nums: Vec<i32>) -> i32 {
     for i in &nums {
         map.entry(i).and_modify(|e| *e += 1).or_insert(1);
     }
-    for (&n,c) in map.clone().into_iter(){
+    for (&n,c) in map.into_iter(){
         if n==1{
             ans = ans.max(c - (c %2==0) as i64);
         }
@@ -152,6 +152,42 @@ pub fn maximum_length(nums: Vec<i32>) -> i32 {
                 n*=n;
             }
             ans= ans.max(n_ans);
+        }
+    }
+    ans as _
+}
+
+pub fn number_of_substrings(s: String) -> i32 {
+    // let s_b = s.as_bytes();
+    // let mut ans = 0;
+    // let mut w_hash = [0;128];
+    // let mut start = 0;
+    //
+    // for end in 0..s_b.len(){
+    //     let cc = s_b[end];
+    //     w_hash[cc as usize]+=1;
+    //
+    //     while w_hash[b'a' as usize]>0 && w_hash[b'b' as usize]>0 && w_hash[b'c' as usize]>0 {
+    //         ans+=s_b.len()-end;
+    //         w_hash[s_b[start] as usize]-=1;
+    //         start+=1;
+    //     }
+    //
+    // }
+    // ans as _
+
+    let mut ans = 0;
+    let mut left =0;
+    let mut s_hash=[0;3];
+    let s_b = s.as_bytes();
+    let n = s_b.len();
+
+    for right in 0..n{
+        s_hash[(s_b[right]-b'a') as usize]+=1;
+        while s_hash[0]>0 && s_hash[1]>0 && s_hash[2]>0{
+            ans+=n-right;
+            s_hash[(s_b[left]-b'a') as usize]-=1;
+            left+=1;
         }
     }
     ans as _
