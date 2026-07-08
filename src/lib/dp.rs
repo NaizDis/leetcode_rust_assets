@@ -98,3 +98,25 @@ pub fn coin_change(coins: Vec<i32>, amount: i32) -> i32 {
         dp[amount as usize]
     }
 }
+pub fn change(amount: i32, coins: Vec<i32>) -> i32 {
+    let n = coins.len();
+    let mut dp = vec![vec![0; amount as usize + 1]; n + 1];
+
+    //base case
+    //we cannot make amount 0 for any case
+    for i in 0..=n {
+        dp[i][0] = 1;
+    }
+
+    for i in 1..=n {
+        for j in 1..=amount {
+            let j = j as usize;
+            if coins[i - 1] <= j as i32 {
+                dp[i][j] = dp[i][j - (coins[i - 1] as usize)] + dp[i - 1][j];
+            } else {
+                dp[i][j] = dp[i - 1][j];
+            }
+        }
+    }
+    dp[n][amount as usize]
+}

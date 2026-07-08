@@ -462,3 +462,28 @@ pub fn longest_palindrome(s: String) -> String {
     }
     String::from(lonstr)
 }
+
+pub fn countpalindrom(s: String) -> i32 {
+    let mut hash = [0; 26];
+    for i in s.bytes() {
+        hash[(i - b'a') as usize] += 1;
+    }
+
+    let (mut dp0, mut dp1) = (1, 0);
+
+    for i in hash {
+        let (odd, even);
+        if i == 0 {
+            even = 1;
+            odd = 0;
+        } else {
+            even = 1 << (i - 1);
+            odd = 1 << (i - 1);
+        }
+        let new0 = dp0 * even;
+        let new1 = dp1 * even + dp0 * odd;
+        dp0 = new0;
+        dp1 = new1;
+    }
+    dp0 + dp1
+}
