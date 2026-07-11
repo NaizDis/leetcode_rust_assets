@@ -305,3 +305,43 @@ pub fn find_safe_walk(grid: Vec<Vec<i32>>, health: i32) -> bool {
     }
     false
 }
+pub fn count_complete_components(n: i32, edges: Vec<Vec<i32>>) -> i32 {
+    let mut adj_list: Vec<Vec<i32>> = vec![vec![]; n as usize];
+    for i in &edges {
+        adj_list[i[0] as usize].push(i[1]);
+        adj_list[i[1] as usize].push(i[0]);
+    }
+    let size = n as usize;
+    let mut seen = vec![false; size as usize];
+    let mut ans = 0;
+
+    fn dfs(n: i32, nodes: &mut Vec<i32>, seen: &mut Vec<bool>, adj_list: &Vec<Vec<i32>>) {
+        if seen[n as usize] {
+            return;
+        }
+        seen[n as usize] = true;
+        nodes.push(n);
+        for &nei in adj_list[n as usize].iter() {
+            dfs(nei, nodes, seen, adj_list);
+        }
+    }
+
+    for n in 0..n {
+        if seen[n as usize] {
+            continue;
+        }
+        let mut comp = vec![];
+        dfs(n, &mut comp, &mut seen, &adj_list);
+        let mut flag = true;
+        for v in comp.iter() {
+            if comp.len() - 1 != adj_list[*v as usize].len() {
+                flag = false;
+                break;
+            }
+        }
+        if flag {
+            ans += 1;
+        }
+    }
+    ans
+}
