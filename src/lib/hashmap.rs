@@ -192,3 +192,35 @@ pub fn number_of_substrings(s: String) -> i32 {
     }
     ans as _
 }
+pub fn array_rank_transform(arr: Vec<i32>) -> Vec<i32> {
+    let n = arr.len();
+    if n==0{
+        return vec![];
+    }
+    // let mut map = HashMap::new();
+    // let mut arrSorted = arr.clone();
+    // arrSorted.sort_unstable();
+    // let mut crrank = 1;
+    // for i in 0..n {
+    //     if i>0 && arrSorted[i]>arrSorted[i-1]{
+    //         crrank+=1;
+    //     }
+    //     map.insert(arrSorted[i], crrank);
+    // }
+    // let mut ans = arr.clone();
+    // for i in 0..n{
+    //     ans[i] = map[&ans[i]];
+    // }
+    // ans
+    //
+    let mut ans = Vec::with_capacity(n);
+    let mut arrSort = arr.clone();
+    arrSort.sort_unstable();
+    arrSort.dedup();
+    for i in &arr{
+        ans.push((arrSort.binary_search(i).unwrap()+1) as i32);
+    }
+    ans
+
+}
+
