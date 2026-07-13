@@ -134,3 +134,14 @@ pub fn trap(height: Vec<i32>) -> i32 {
     }
     res
 }
+pub fn move_zeroes(nums: &mut Vec<i32>) {
+    let (mut l, n) = (0, nums.len());
+    for r in 0..n {
+        if nums[r] != 0 {
+            let a = nums[r];
+            nums[r] = nums[l];
+            nums[l] = a;
+            l += 1;
+        }
+    }
+}

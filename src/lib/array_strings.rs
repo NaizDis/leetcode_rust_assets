@@ -487,3 +487,47 @@ pub fn countpalindrom(s: String) -> i32 {
     }
     dp0 + dp1
 }
+pub fn remove_covered_intervals(mut intervals: Vec<Vec<i32>>) -> i32 {
+    // O(n^2)
+    // let mut ans = vec![];
+    // let n = intervals.len();
+    // for i in 0..n {
+    //     let mut flag = true;
+    //     for j in 0..n {
+    //         if i == j {
+    //             continue;
+    //         }
+    //         if intervals[j][0] <= intervals[i][0] && intervals[j][1] >= intervals[i][1] {
+    //             flag = false;
+    //         }
+    //     }
+    //     if flag {
+    //         ans.push(&intervals[i]);
+    //     }
+    //     flag = true;
+    // }
+    // ans.len() as _
+    //
+    //O(nlogn)
+    //
+    //
+    intervals.sort_by(|a, b| a[0].cmp(&b[0]).then(b[1].cmp(&a[1])));
+    let mut count = 1;
+    let mut prev = &intervals[0];
+    for crr in &intervals[1..] {
+        if crr[1] > prev[1] {
+            count += 1;
+            prev = crr;
+        }
+    }
+    count
+}
+pub fn seconds_between_times(start_time: String, end_time: String) -> i32 {
+    let secs = |s: &str| -> i32 {
+        let parts: Vec<i32> = s.split(':').map(|n| n.parse().unwrap()).collect();
+        parts[0] * 3600 + parts[1] * 60 + parts[2]
+    };
+    let start = secs(&start_time);
+    let end = secs(&end_time);
+    (end - start).rem_euclid(86400)
+}
