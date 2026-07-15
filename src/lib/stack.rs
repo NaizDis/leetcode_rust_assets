@@ -1,4 +1,4 @@
-use std::usize;
+use std::i32;
 
 pub fn cal_points(operations: vec<string>) -> i32 {
     let mut rec = vec![];
@@ -182,4 +182,84 @@ pub fn find132pattern(nums: vec<i32>) -> bool {
         stk.push(*i);
     }
     false
+}
+pub fn next_greater_element(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
+    let (n, m) = (nums1.len(), nums2.len());
+    let mut gret_ele = vec![-1; m];
+    let mut monotonic = vec![];
+
+    use ::std::collections::HashMap;
+    let mut hash: HashMap<i32, i32> = HashMap::new();
+
+    for i in (0..=m - 1).rev() {
+        while !monotonic.is_empty() && *monotonic.last().unwrap() <= nums2[i] {
+            monotonic.pop();
+        }
+        if !monotonic.is_empty() && *monotonic.last().unwrap() > nums2[i] {
+            gret_ele[i] = *monotonic.last().unwrap();
+        }
+        monotonic.push(nums2[i]);
+    }
+    for i in 0..m {
+        *hash.entry(nums2[i]).or_insert(-1) = gret_ele[i];
+    }
+
+    let mut ans = vec![-1; n];
+    for i in 0..n {
+        ans[i] = hash[&nums1[i]];
+    }
+    ans
+}
+pub fn next_greater_elements(nums: Vec<i32>) -> Vec<i32> {
+    // Optimal iterate over 2*n time the array
+    // let n = nums.len();
+    // let mut gret_ele = vec![-1; n];
+    // let mut monotonic = vec![];
+    //
+    // for i in (0..2 * n).rev() {
+    //     while !monotonic.is_empty() && monotonic[monotonic.len() - 1] <= nums[(i % n)] {
+    //         monotonic.pop();
+    //     }
+    //     if !monotonic.is_empty() && monotonic[monotonic.len() - 1] > nums[i % n] {
+    //         gret_ele[i % n] = monotonic[monotonic.len() - 1];
+    //     }
+    //     monotonic.push(nums[i % n]);
+    // }
+    // gret_ele
+    //
+    //
+    //
+    //
+    //// APproach by starting from max_value_indice
+    let n = nums.len();
+    let mut gret_ele = vec![-1; n];
+    let mut monotonic = vec![];
+
+    let mut idx_max = 0;
+
+    let mut lg = i32::MIN;
+    for i in 0..n {
+        if nums[i] >= lg {
+            lg = nums[i];
+            idx_max = i;
+        }
+    }
+
+    monotonic.push(nums[idx_max]);
+
+    let mut cnt = 0;
+    let mut t = (idx_max + n - 1) % n;
+
+    while cnt != n {
+        while !monotonic.is_empty() && monotonic[monotonic.len() - 1] <= nums[t] {
+            monotonic.pop();
+        }
+        if !monotonic.is_empty() && monotonic[monotonic.len() - 1] > nums[t] {
+            gret_ele[t] = monotonic[monotonic.len() - 1];
+        }
+        monotonic.push(nums[t]);
+        t = (t + n - 1) % n;
+        cnt += 1;
+    }
+    gret_ele
 }

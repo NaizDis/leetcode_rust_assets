@@ -120,3 +120,44 @@ pub fn change(amount: i32, coins: Vec<i32>) -> i32 {
     }
     dp[n][amount as usize]
 }
+pub fn subsequence_pair_count(nums: Vec<i32>) -> i32 {
+    const MOD: i64 = 1_000_000_007;
+
+    fn gcd(mut a: i32, mut b: i32) -> i32 {
+        while b != 0 {
+            let temp = b;
+            b = a % b;
+            a = temp;
+        }
+        a
+    }
+
+    use std::collections::HashMap;
+    let mut dp = HashMap::new();
+    dp.insert((0i32, 0i32), 1i64);
+
+    for &x in &nums {
+        let prev: Vec<_> = dp.drain().collect();
+        for ((g1, g2), cnt) in prev {
+            // skip
+            *dp.entry((g1, g2)).or_default() =
+                (dp.get(&(g1, g2)).copied().unwrap_or(0) + cnt) % MOD;
+            // put in seq1
+            let ng1 = if g1 == 0 { x } else { gcd(g1, x) };
+            *dp.entry((ng1, g2)).or_default() =
+                (dp.get(&(ng1, g2)).copied().unwrap_or(0) + cnt) % MOD;
+            // put in seq2
+            let ng2 = if g2 == 0 { x } else { gcd(g2, x) };
+            *dp.entry((g1, ng2)).or_default() =
+                (dp.get(&(g1, ng2)).copied().unwrap_or(0) + cnt) % MOD;
+        }
+    }
+
+    let mut ans: i64 = 0;
+    for ((g1, g2), cnt) in &dp {
+        if g1 == g2 && *g1 != 0 {
+            ans = (ans + cnt) % MOD;
+        }
+    }
+    ans as i32
+}

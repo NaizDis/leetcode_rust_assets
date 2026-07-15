@@ -5,6 +5,7 @@ pub mod graphs;
 pub mod hashmap;
 pub mod heaps;
 pub mod linklist;
+pub mod math;
 pub mod recursive_backtracking;
 pub mod sliding_win;
 pub mod stack;

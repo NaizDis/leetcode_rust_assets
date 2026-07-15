@@ -531,3 +531,18 @@ pub fn seconds_between_times(start_time: String, end_time: String) -> i32 {
     let end = secs(&end_time);
     (end - start).rem_euclid(86400)
 }
+pub fn is_palindrome(x: i32) -> bool {
+    let num: Vec<i32> = x.to_string().bytes().map(|b| (b - b'0') as i32).collect();
+    let (mut l, mut r) = (0, num.len() - 1);
+    let mut flag = true;
+    while r > l {
+        if num[l] == num[r] {
+            l += 1;
+            r -= 1;
+        } else {
+            flag = false;
+            break;
+        }
+    }
+    flag
+}
