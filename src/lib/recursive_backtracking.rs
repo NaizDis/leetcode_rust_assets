@@ -1,3 +1,4 @@
+// LeetCode #78
 pub fn subsets(nums: Vec<i32>) -> Vec<Vec<i32>> {
     let mut res = vec![];
     let mut sol: Vec<i32> = vec![];
@@ -19,6 +20,7 @@ pub fn subsets(nums: Vec<i32>) -> Vec<Vec<i32>> {
     dfs(&nums, n, 0, &mut res, &mut sol);
     res
 }
+// LeetCode #46
 pub fn permute(nums: Vec<i32>) -> Vec<Vec<i32>> {
     let mut res = vec![];
     let mut sol: Vec<i32> = vec![];
@@ -46,6 +48,7 @@ use std::{
     str::FromStr,
     string, usize,
 };
+// LeetCode #77
 pub fn combine(n: i32, k: i32) -> Vec<Vec<i32>> {
     // Not Effiecient -- ALmost Brute Force --- Time-o(n!) // Space-o(n)
     // let mut res: Vec<(HashSet<i32>, Vec<i32>)> = vec![];
@@ -98,6 +101,7 @@ pub fn combine(n: i32, k: i32) -> Vec<Vec<i32>> {
     dfs(n, k as usize, &mut res, &mut sol);
     res
 }
+// LeetCode #39
 pub fn combination_sum(candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
     let mut res = vec![];
     let mut sol: Vec<i32> = vec![];
@@ -128,6 +132,7 @@ pub fn combination_sum(candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
     dfs(&nums, target, 0, n as i32, 0, &mut res, &mut sol);
     res
 }
+// LeetCode #17
 pub fn letter_combinations(digits: String) -> Vec<String> {
     if digits.is_empty() {
         return vec![];
@@ -150,6 +155,7 @@ pub fn letter_combinations(digits: String) -> Vec<String> {
     dfs(String::new(), &digits, &phone_map, &mut res);
     res
 }
+// LeetCode #22
 pub fn generate_parenthesis(n: i32) -> Vec<String> {
     let mut res = vec![];
     let mut sol = String::new();

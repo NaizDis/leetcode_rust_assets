@@ -12,6 +12,7 @@ impl ListNode {
         ListNode { next: None, val }
     }
 }
+// LeetCode #83
 pub fn delete_duplicates(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
     if head.is_none() {
         return None;
@@ -27,6 +28,7 @@ pub fn delete_duplicates(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
     }
     h
 }
+// LeetCode #206
 pub fn reverse_list(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
     let (mut prev, mut curr) = (None, head);
     while let Some(mut node) = curr {
@@ -36,6 +38,7 @@ pub fn reverse_list(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
     }
     prev
 }
+// LeetCode #21
 pub fn merge_two_lists(
     l1: Option<Box<ListNode>>,
     l2: Option<Box<ListNode>>,
@@ -58,6 +61,7 @@ pub fn merge_two_lists(
         }
     }
 }
+// LeetCode #876
 pub fn middle_node(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
     let mut cur_node = head.as_ref();
     let mut mid_node = head.as_ref();

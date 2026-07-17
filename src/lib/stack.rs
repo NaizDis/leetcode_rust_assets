@@ -1,5 +1,6 @@
 use std::i32;
 
+// LeetCode #682
 pub fn cal_points(operations: vec<string>) -> i32 {
     let mut rec = vec![];
     for i in operations {
@@ -24,6 +25,7 @@ pub fn cal_points(operations: vec<string>) -> i32 {
     }
     rec.iter().fold(0, |a, c| a + c)
 }
+// LeetCode #20
 pub fn is_valid(s: string) -> bool {
     let token: vec<char> = s.chars().collect();
     let mut stack = vec![];
@@ -58,6 +60,7 @@ pub fn is_valid(s: string) -> bool {
     }
     stack.is_empty()
 }
+// LeetCode #150
 pub fn eval_rpn(tokens: vec<string>) -> i32 {
     let mut stact = vec![];
     for i in tokens {
@@ -79,6 +82,7 @@ pub fn eval_rpn(tokens: vec<string>) -> i32 {
     }
     stact[0]
 }
+// LeetCode #739
 pub fn daily_temperatures(temperatures: vec<i32>) -> vec<i32> {
     // let mut res = vec![];
     //time - o(n^2) | space - o(1)
@@ -108,6 +112,7 @@ pub fn daily_temperatures(temperatures: vec<i32>) -> vec<i32> {
 
     res
 }
+// LeetCode #155
 struct minstack {
     stack: vec<i32>,
     min_stack: vec<i32>,
@@ -149,6 +154,7 @@ impl minstack {
         *self.min_stack.iter().last().unwrap()
     }
 }
+// LeetCode #456
 pub fn find132pattern(nums: vec<i32>) -> bool {
     //o(n^3) - BruteForce
     // let res: bool = false;
@@ -183,6 +189,7 @@ pub fn find132pattern(nums: vec<i32>) -> bool {
     }
     false
 }
+// LeetCode #496
 pub fn next_greater_element(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
     let (n, m) = (nums1.len(), nums2.len());
     let mut gret_ele = vec![-1; m];
@@ -210,6 +217,7 @@ pub fn next_greater_element(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
     }
     ans
 }
+// LeetCode #503
 pub fn next_greater_elements(nums: Vec<i32>) -> Vec<i32> {
     // Optimal iterate over 2*n time the array
     // let n = nums.len();

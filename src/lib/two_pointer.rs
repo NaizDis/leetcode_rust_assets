@@ -1,9 +1,11 @@
+use core::num;
 use std::{
     cmp::Ordering,
     collections::{HashMap, HashSet},
     ops::RangeBounds,
 };
 
+// LeetCode #977
 pub fn sorted_squares(mut nums: Vec<i32>) -> Vec<i32> {
     // nums.sort_by_key(|x| x.abs());
     // nums.iter().map(|&e| e * e).collect()
@@ -21,6 +23,7 @@ pub fn sorted_squares(mut nums: Vec<i32>) -> Vec<i32> {
     }
     res
 }
+// LeetCode #344
 pub fn reverse_string(s: &mut Vec<char>) {
     let (mut i, mut j) = (0, s.len() - 1);
     while j > i {
@@ -31,6 +34,7 @@ pub fn reverse_string(s: &mut Vec<char>) {
         j -= 1;
     }
 }
+// LeetCode #167
 pub fn two_sum(numbers: Vec<i32>, target: i32) -> Vec<i32> {
     let (mut i, mut j) = (0, numbers.len() - 1);
     while j > i {
@@ -45,6 +49,7 @@ pub fn two_sum(numbers: Vec<i32>, target: i32) -> Vec<i32> {
     }
     vec![]
 }
+// LeetCode #125
 pub fn is_palindrome(mut s: String) -> bool {
     s = s.to_lowercase();
     let chars: Vec<char> = s.chars().filter(|e| e.is_alphanumeric()).collect();
@@ -62,6 +67,7 @@ pub fn is_palindrome(mut s: String) -> bool {
     }
     true
 }
+// LeetCode #15
 pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
     let mut res = HashSet::new();
     let mut hash = HashMap::new();
@@ -88,6 +94,7 @@ pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
     fp
 }
 
+// LeetCode #11
 pub fn max_area(mut height: Vec<i32>) -> i32 {
     // let mut res = 0;
     // for i in 0..height.len() {
@@ -110,6 +117,7 @@ pub fn max_area(mut height: Vec<i32>) -> i32 {
     }
     res
 }
+// LeetCode #42
 pub fn trap(height: Vec<i32>) -> i32 {
     let mut res = 0;
     let n = height.len();
@@ -134,6 +142,7 @@ pub fn trap(height: Vec<i32>) -> i32 {
     }
     res
 }
+// LeetCode #283
 pub fn move_zeroes(nums: &mut Vec<i32>) {
     let (mut l, n) = (0, nums.len());
     for r in 0..n {
@@ -144,4 +153,42 @@ pub fn move_zeroes(nums: &mut Vec<i32>) {
             l += 1;
         }
     }
+}
+// LeetCode#
+pub fn gcd_sum(nums: Vec<i32>) -> i64 {
+    let n = nums.len();
+    let mut pref_sum = vec![1; n];
+    let mut mx_array = vec![i32::MIN; n];
+    let mut ans = 0;
+
+    fn gcd(mut a: i64, mut b: i64) -> i64 {
+        while b != 0 {
+            let temp = b;
+            b = a % b;
+            a = temp;
+        }
+        a
+    }
+
+    let mut maxTill = nums[0];
+    for i in 0..n {
+        if maxTill < nums[i] {
+            mx_array[i] = nums[i];
+            maxTill = nums[i];
+        } else {
+            mx_array[i] = maxTill;
+        }
+        pref_sum[i] = gcd(mx_array[i] as _, nums[i] as _);
+    }
+
+    pref_sum.sort_unstable();
+
+    let (mut l, mut r) = (0, n - 1);
+
+    while r > l {
+        ans += gcd(pref_sum[l], pref_sum[r]);
+        l += 1;
+        r -= 1;
+    }
+    ans as _
 }

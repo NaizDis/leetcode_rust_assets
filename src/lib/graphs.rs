@@ -2,6 +2,7 @@ use std::collections::{HashMap, HashSet, VecDeque};
 
 use crate::lib::graphs;
 
+// LeetCode #1971
 pub fn valid_path(n: i32, edges: Vec<Vec<i32>>, source: i32, destination: i32) -> bool {
     if source == destination {
         return true;
@@ -32,6 +33,7 @@ pub fn valid_path(n: i32, edges: Vec<Vec<i32>>, source: i32, destination: i32) -
     }
     dfs(source, destination, &graph, &mut set)
 }
+// LeetCode #200
 pub fn num_islands(mut grid: Vec<Vec<char>>) -> i32 {
     let (m, n) = (grid.len(), grid[0].len());
     let mut res = 0;
@@ -57,6 +59,7 @@ pub fn num_islands(mut grid: Vec<Vec<char>>) -> i32 {
     }
     res
 }
+// LeetCode #695
 pub fn max_area_of_island(mut grid: Vec<Vec<i32>>) -> i32 {
     let (m, n) = (grid.len(), grid[0].len());
     let mut res = 0;
@@ -82,6 +85,7 @@ pub fn max_area_of_island(mut grid: Vec<Vec<i32>>) -> i32 {
     }
     res
 }
+// LeetCode #207
 pub fn can_finish(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> bool {
     let mut graph: HashMap<i32, Vec<i32>> = HashMap::new();
     for ed in prerequisites.iter() {
@@ -125,6 +129,7 @@ pub fn can_finish(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> bool {
     }
     true
 }
+// LeetCode #210
 pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {
     let mut res = vec![];
     let mut graph: HashMap<i32, Vec<i32>> = HashMap::new();
@@ -175,6 +180,7 @@ pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {
     }
     res
 }
+// LeetCode #417
 pub fn pacific_atlantic(heights: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     let (m, n) = (heights.len(), heights[0].len());
     let mut res = vec![];
@@ -235,6 +241,7 @@ pub fn pacific_atlantic(heights: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
 
     res
 }
+// LeetCode #994
 pub fn oranges_rotting(mut grid: Vec<Vec<i32>>) -> i32 {
     let (m, n) = (grid.len(), grid[0].len());
     let mut que = VecDeque::new();
@@ -273,6 +280,7 @@ pub fn oranges_rotting(mut grid: Vec<Vec<i32>>) -> i32 {
         -1
     }
 }
+// LeetCode #3286
 pub fn find_safe_walk(grid: Vec<Vec<i32>>, health: i32) -> bool {
     let (m, n) = (grid.len(), grid[0].len());
     let mut que = VecDeque::new();
@@ -305,6 +313,7 @@ pub fn find_safe_walk(grid: Vec<Vec<i32>>, health: i32) -> bool {
     }
     false
 }
+// LeetCode #2685
 pub fn count_complete_components(n: i32, edges: Vec<Vec<i32>>) -> i32 {
     let mut adj_list: Vec<Vec<i32>> = vec![vec![]; n as usize];
     for i in &edges {

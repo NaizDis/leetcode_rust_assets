@@ -2,6 +2,7 @@ use std::{
     collections::{HashMap, HashSet},
     usize,
 };
+// LeetCode #771
 pub fn num_jewels_in_stones(jewels: String, stones: String) -> i32 {
     let mut map = HashMap::new();
     for i in stones.chars() {
@@ -16,6 +17,7 @@ pub fn num_jewels_in_stones(jewels: String, stones: String) -> i32 {
     }
     res
 }
+// LeetCode #217
 pub fn contains_duplicate(nums: Vec<i32>) -> bool {
     let mut map = HashMap::new();
     for i in nums {
@@ -23,6 +25,7 @@ pub fn contains_duplicate(nums: Vec<i32>) -> bool {
     }
     map.values().any(|&b| b > 1)
 }
+// LeetCode #383
 pub fn can_construct(ransom_note: String, magazine: String) -> bool {
     let mut map = HashMap::new();
     for i in magazine.chars() {
@@ -33,6 +36,7 @@ pub fn can_construct(ransom_note: String, magazine: String) -> bool {
     }
     !map.values().any(|&b| b < 0)
 }
+// LeetCode #242
 pub fn is_anagram(s: String, t: String) -> bool {
     let mut s_map = [0u32; 26];
     for i in s.as_bytes() {
@@ -43,6 +47,7 @@ pub fn is_anagram(s: String, t: String) -> bool {
     }
     !s_map.iter().any(|&i| i != 0)
 }
+// LeetCode #1189
 pub fn max_number_of_balloons(text: String) -> i32 {
     let mut res = 0;
     let mut s_map = [0u32; 26];
@@ -62,6 +67,7 @@ pub fn max_number_of_balloons(text: String) -> i32 {
     }
     res
 }
+// LeetCode #1
 pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
     let mut res: Vec<i32> = vec![];
     let mut map: HashMap<i32, i32> = HashMap::new();
@@ -73,6 +79,7 @@ pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
     }
     vec![]
 }
+// LeetCode #49
 pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
     let mut map = HashMap::new();
     for i in strs {
@@ -82,6 +89,7 @@ pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
     }
     map.values().cloned().collect()
 }
+// LeetCode #169
 pub fn majority_element(nums: Vec<i32>) -> i32 {
     let (mut m, mut c) = (0, 0);
     for i in nums {
@@ -96,6 +104,7 @@ pub fn majority_element(nums: Vec<i32>) -> i32 {
     }
     m
 }
+// LeetCode #128
 pub fn longest_consecutive(mut nums: Vec<i32>) -> i32 {
     if nums.len() == 0 {
         return 0;
@@ -118,6 +127,7 @@ pub fn longest_consecutive(mut nums: Vec<i32>) -> i32 {
     max
 }
 //Simpler Use take_while And Count
+// LeetCode #128
 pub fn longest_consecutive2(nums: Vec<i32>) -> i32 {
     let num_set: HashSet<_> = nums.into_iter().collect();
     let mut map :HashMap<> = nums.into_iter().
@@ -130,6 +140,7 @@ pub fn longest_consecutive2(nums: Vec<i32>) -> i32 {
     }
     ans as i32
 }
+// LeetCode #2501
 pub fn maximum_length(nums: Vec<i32>) -> i32 {
     let nums = nums.iter().map(|&x| x as i64).collect::<Vec<_>>();
     let mut map = HashMap::new();
@@ -157,6 +168,7 @@ pub fn maximum_length(nums: Vec<i32>) -> i32 {
     ans as _
 }
 
+// LeetCode #1358
 pub fn number_of_substrings(s: String) -> i32 {
     // let s_b = s.as_bytes();
     // let mut ans = 0;
@@ -192,6 +204,7 @@ pub fn number_of_substrings(s: String) -> i32 {
     }
     ans as _
 }
+// LeetCode #1331
 pub fn array_rank_transform(arr: Vec<i32>) -> Vec<i32> {
     let n = arr.len();
     if n==0{

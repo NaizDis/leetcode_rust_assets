@@ -5,6 +5,7 @@ use std::{
     num,
 };
 
+// LeetCode #643
 pub fn find_max_average(nums: Vec<i32>, k: i32) -> f64 {
     let ku = k as usize;
     let mut s = nums[..ku].iter().sum::<i32>();
@@ -16,6 +17,7 @@ pub fn find_max_average(nums: Vec<i32>, k: i32) -> f64 {
     }
     max as f64 / k as f64
 }
+// LeetCode #1004
 pub fn longest_ones(nums: Vec<i32>, k: i32) -> i32 {
     // O(n^2)
     // let mut wind_len = 0;
@@ -55,6 +57,7 @@ pub fn longest_ones(nums: Vec<i32>, k: i32) -> i32 {
     }
     max_len as i32
 }
+// LeetCode #3
 pub fn length_of_longest_substring(s: String) -> i32 {
     let mut l = 0;
     let mut max_len = 0;
@@ -72,6 +75,7 @@ pub fn length_of_longest_substring(s: String) -> i32 {
     }
     max_len as i32
 }
+// LeetCode #424
 pub fn character_replacement(s: String, k: i32) -> i32 {
     let mut l = 0;
     let mut max = 0;
@@ -87,6 +91,7 @@ pub fn character_replacement(s: String, k: i32) -> i32 {
     }
     max as i32
 }
+// LeetCode #209
 pub fn min_sub_array_len(target: i32, nums: Vec<i32>) -> i32 {
     let mut l = 0;
     let mut min_len = i32::MAX;
@@ -106,6 +111,7 @@ pub fn min_sub_array_len(target: i32, nums: Vec<i32>) -> i32 {
         0
     }
 }
+// LeetCode #567
 pub fn check_inclusion(s1: String, s2: String) -> bool {
     let (n1, n2) = (s1.len(), s2.len());
     if n1 > n2 {
@@ -131,6 +137,7 @@ pub fn check_inclusion(s1: String, s2: String) -> bool {
     false
 }
 
+// LeetCode #76
 pub fn min_window(s: String, t: String) -> String {
     if s.len() < t.len() {
         return String::new();

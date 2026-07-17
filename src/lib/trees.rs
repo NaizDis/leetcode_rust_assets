@@ -24,6 +24,7 @@ use std::{mem, usize};
 
 use super::stack;
 type TreeLink = Option<Rc<RefCell<TreeNode>>>;
+// LeetCode #226
 pub fn invert_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Option<Rc<RefCell<TreeNode>>> {
     let mut queue: Vec<TreeLink> = vec![];
     queue.push(root.clone());
@@ -37,6 +38,7 @@ pub fn invert_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Option<Rc<RefCell<Tre
     }
     root
 }
+// LeetCode #104
 pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     if root.is_none() {
         return 0;
@@ -47,6 +49,7 @@ pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     let right = self::max_depth(node.right.take());
     left.max(right) + 1
 }
+// LeetCode #110
 pub fn is_balanced(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
     let mut res = vec![true];
     fn dfs(root: Option<Rc<RefCell<TreeNode>>>, res: &mut Vec<bool>) -> i32 {
@@ -69,6 +72,7 @@ pub fn is_balanced(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
     dfs(root, res.as_mut());
     res[0]
 }
+// LeetCode #543
 pub fn diameter_of_binary_tree(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     let mut max_d = vec![0];
     fn height(root: Option<Rc<RefCell<TreeNode>>>, mxd: &mut Vec<i32>) -> i32 {
@@ -86,6 +90,7 @@ pub fn diameter_of_binary_tree(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     height(root, max_d.as_mut());
     max_d[0]
 }
+// LeetCode #100
 pub fn is_same_tree(p: Option<Rc<RefCell<TreeNode>>>, q: Option<Rc<RefCell<TreeNode>>>) -> bool {
     fn balanced(p: Option<Rc<RefCell<TreeNode>>>, q: Option<Rc<RefCell<TreeNode>>>) -> bool {
         match (p, q) {
@@ -102,6 +107,7 @@ pub fn is_same_tree(p: Option<Rc<RefCell<TreeNode>>>, q: Option<Rc<RefCell<TreeN
     }
     balanced(p, q)
 }
+// LeetCode #101
 pub fn is_symmetric(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
     fn same(p: Option<Rc<RefCell<TreeNode>>>, q: Option<Rc<RefCell<TreeNode>>>) -> bool {
         match (p, q) {
@@ -118,6 +124,7 @@ pub fn is_symmetric(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
     }
     same(root.clone(), root)
 }
+// LeetCode #112
 pub fn has_path_sum(root: Option<Rc<RefCell<TreeNode>>>, sum: i32) -> bool {
     if let Some(n) = root {
         let node = n.borrow();
@@ -129,6 +136,7 @@ pub fn has_path_sum(root: Option<Rc<RefCell<TreeNode>>>, sum: i32) -> bool {
     }
     false
 }
+// LeetCode #572
 pub fn is_subtree(
     root: Option<Rc<RefCell<TreeNode>>>,
     sub_root: Option<Rc<RefCell<TreeNode>>>,
@@ -144,6 +152,7 @@ pub fn is_subtree(
         return false;
     }
 }
+// LeetCode #102
 pub fn level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
     if root.is_none() {
         return vec![];
@@ -170,6 +179,7 @@ pub fn level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
     }
     res
 }
+// LeetCode #230
 pub fn kth_smallest(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     let mut res_arr = vec![];
     fn dfs(root: Option<Rc<RefCell<TreeNode>>>, arr: &mut Vec<i32>) {
@@ -183,6 +193,7 @@ pub fn kth_smallest(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     dfs(root, res_arr.as_mut());
     res_arr[(k - 1) as usize]
 }
+// LeetCode #783
 pub fn get_minimum_difference(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     let mut prev = vec![-1];
     let mut min_dist = vec![i32::MAX];
@@ -200,6 +211,7 @@ pub fn get_minimum_difference(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     dfs(root, min_dist.as_mut(), prev.as_mut());
     min_dist[0]
 }
+// LeetCode #98
 pub fn is_valid_bst(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
     fn dfs(root: Option<Rc<RefCell<TreeNode>>>, min: i64, max: i64) -> bool {
         if let Some(p) = root {
@@ -215,6 +227,7 @@ pub fn is_valid_bst(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
     dfs(root, i64::MIN, i64::MAX)
 }
 use std::cmp::Ordering;
+// LeetCode #235
 pub fn lowest_common_ancestor(
     root: Option<Rc<RefCell<TreeNode>>>,
     p: Option<Rc<RefCell<TreeNode>>>,
@@ -237,6 +250,7 @@ pub fn lowest_common_ancestor(
 use std::collections::HashMap;
 
 #[derive(Default)]
+// LeetCode #208
 struct Trie {
     children: HashMap<char, Trie>,
     is_leaf: bool,

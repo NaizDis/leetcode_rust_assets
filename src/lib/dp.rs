@@ -1,3 +1,4 @@
+// LeetCode #70
 pub fn climb_stairs(n: i32) -> i32 {
     if n <= 2 {
         return n;
@@ -11,6 +12,7 @@ pub fn climb_stairs(n: i32) -> i32 {
     }
     b
 }
+// LeetCode #746
 pub fn min_cost_climbing_stairs(cost: Vec<i32>) -> i32 {
     let n = cost.len();
     let mut min_cost = vec![0, 0];
@@ -20,6 +22,7 @@ pub fn min_cost_climbing_stairs(cost: Vec<i32>) -> i32 {
     }
     min_cost[n]
 }
+// LeetCode #198
 pub fn rob(nums: Vec<i32>) -> i32 {
     let n = nums.len();
     if n == 1 {
@@ -36,6 +39,7 @@ pub fn rob(nums: Vec<i32>) -> i32 {
     }
     *res.iter().last().unwrap()
 }
+// LeetCode #62
 pub fn unique_paths(m: i32, n: i32) -> i32 {
     // Recursive Solution -- Time Limit Exceeded -- O(2^(m+n))
     // if m == 1 || n == 1 {
@@ -58,6 +62,7 @@ pub fn unique_paths(m: i32, n: i32) -> i32 {
     }
     dp[(m - 1) as usize][(n - 1) as usize]
 }
+// LeetCode #55
 pub fn can_jump(nums: Vec<i32>) -> bool {
     //O(n) -- Greedy Approach
     let n = nums.len();
@@ -81,6 +86,7 @@ pub fn can_jump(nums: Vec<i32>) -> bool {
 
     goal == 0
 }
+// LeetCode #322
 pub fn coin_change(coins: Vec<i32>, amount: i32) -> i32 {
     // Dynamic Programming -- O(n*amount)
     let mut dp = vec![amount + 1; amount as usize + 1];
@@ -98,6 +104,7 @@ pub fn coin_change(coins: Vec<i32>, amount: i32) -> i32 {
         dp[amount as usize]
     }
 }
+// LeetCode #518
 pub fn change(amount: i32, coins: Vec<i32>) -> i32 {
     let n = coins.len();
     let mut dp = vec![vec![0; amount as usize + 1]; n + 1];
@@ -120,6 +127,7 @@ pub fn change(amount: i32, coins: Vec<i32>) -> i32 {
     }
     dp[n][amount as usize]
 }
+// LeetCode #3336
 pub fn subsequence_pair_count(nums: Vec<i32>) -> i32 {
     const MOD: i64 = 1_000_000_007;
 

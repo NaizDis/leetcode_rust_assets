@@ -6,6 +6,7 @@ use std::{
     rc::Rc,
     usize,
 };
+// LeetCode #1768
 pub fn merge_alternately(word1: String, word2: String) -> String {
     word1
         .chars()
@@ -16,6 +17,7 @@ pub fn merge_alternately(word1: String, word2: String) -> String {
         .collect()
 }
 
+// LeetCode #13
 pub fn roman_to_int(s: String) -> i32 {
     let mut res = 0;
     let chars: Vec<char> = s.chars().collect();
@@ -40,6 +42,7 @@ pub fn roman_to_int(s: String) -> i32 {
     res
 }
 
+// LeetCode #392
 pub fn is_subsequence(s: String, t: String) -> bool {
     let s_chars: Vec<char> = s.chars().collect();
     let t_chars: Vec<char> = t.chars().collect();
@@ -55,6 +58,7 @@ pub fn is_subsequence(s: String, t: String) -> bool {
     i == s_chars.len() // If i reached the end of s, it's a subsequence
 }
 
+// LeetCode #121
 pub fn max_profit(prices: Vec<i32>) -> i32 {
     let mut bday = prices[0];
     let mut profit: i32 = 0;
@@ -71,6 +75,7 @@ pub fn max_profit(prices: Vec<i32>) -> i32 {
     profit
 }
 
+// LeetCode #14
 pub fn longest_common_prefix(strs: Vec<String>) -> String {
     let mut min_len: usize = usize::MAX;
     for i in &strs {
@@ -89,6 +94,7 @@ pub fn longest_common_prefix(strs: Vec<String>) -> String {
     }
     strs[0][..p].to_string()
 }
+// LeetCode #228
 pub fn summary_ranges(nums: Vec<i32>) -> Vec<String> {
     let mut res: Vec<String> = Vec::new();
     let mut i = 0;
@@ -107,6 +113,7 @@ pub fn summary_ranges(nums: Vec<i32>) -> Vec<String> {
     res
 }
 
+// LeetCode #238
 pub fn product_except_self(nums: Vec<i32>) -> Vec<i32> {
     let mut l_mult: i32 = 1;
     let mut r_mult: i32 = 1;
@@ -126,6 +133,7 @@ pub fn product_except_self(nums: Vec<i32>) -> Vec<i32> {
     l_arr.iter().zip(&r_arr).map(|(a, b)| a * b).collect()
 }
 
+// LeetCode #56
 pub fn merge(mut intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     intervals.sort_by(|q, r| q[0].cmp(&r[0]));
     let mut res: Vec<Vec<i32>> = Vec::new();
@@ -148,6 +156,7 @@ pub fn merge(mut intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     res
 }
 
+// LeetCode #2239
 pub fn find_closest_number(nums: Vec<i32>) -> i32 {
     use std::cmp::Ordering;
     nums.into_iter()
@@ -158,6 +167,7 @@ pub fn find_closest_number(nums: Vec<i32>) -> i32 {
         .unwrap()
 }
 
+// LeetCode #54
 pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
     if matrix.is_empty() || matrix[0].is_empty() {
         return vec![];
@@ -204,6 +214,7 @@ pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
     res
 }
 
+// LeetCode #48
 pub fn rotate(matrix: &mut Vec<Vec<i32>>) {
     let dim = matrix.len();
     for i in 0..dim {
@@ -217,6 +228,7 @@ pub fn rotate(matrix: &mut Vec<Vec<i32>>) {
         i.reverse();
     }
 }
+// LeetCode #1027
 pub fn larg_arith_sub(nums: Vec<i32>) -> i32 {
     let n = nums.len();
     if n <= 2 {
@@ -236,6 +248,7 @@ pub fn larg_arith_sub(nums: Vec<i32>) -> i32 {
     }
     max_len
 }
+// LeetCode #53
 pub fn max_sub_array(nums: Vec<i32>) -> i32 {
     let mut max: i32 = MIN;
     let mut sum = 0;
@@ -248,6 +261,7 @@ pub fn max_sub_array(nums: Vec<i32>) -> i32 {
     }
     max
 }
+// LeetCode #509
 pub fn fib(n: i32) -> i32 {
     let mut arr = vec![0, 1];
     for i in 2..=n as usize {
@@ -255,6 +269,7 @@ pub fn fib(n: i32) -> i32 {
     }
     arr[n as usize]
 }
+// LeetCode#
 pub fn master_magic_dcode(n: i32, x: i32, y: i32, diff: Vec<i32>) -> i32 {
     let mut res = 0;
     for i in diff {
@@ -265,6 +280,7 @@ pub fn master_magic_dcode(n: i32, x: i32, y: i32, diff: Vec<i32>) -> i32 {
     }
     res
 }
+// LeetCode#
 pub fn rnd_file_dcode(nums: Vec<i32>) -> (i32, i32) {
     let mut nums: Vec<i32> = nums.clone();
     nums.sort_by(|a, b| b.abs().cmp(&a.abs()));
@@ -291,6 +307,7 @@ pub fn rnd_file_dcode(nums: Vec<i32>) -> (i32, i32) {
     }
     (a, b)
 }
+// LeetCode#
 pub fn chosen_one_dcode(strr: String) -> char {
     let mut map = HashMap::new();
     for i in strr.chars() {
@@ -301,6 +318,7 @@ pub fn chosen_one_dcode(strr: String) -> char {
         .map(|(x, _v)| x)
         .unwrap()
 }
+// LeetCode#
 pub fn paint_wall_dcode(strr: String) -> bool {
     let chrs: Vec<char> = strr.chars().collect();
     let n = strr.len();
@@ -365,12 +383,14 @@ pub fn paint_wall_dcode(strr: String) -> bool {
     chrs == temp
 }
 
+// LeetCode#
 pub fn death_note_dcode(l: i32, r: i32) -> bool {
     let smll = l.min(r);
     let big = l.max(r);
     (l + r) % 3 == 0 && smll >= big / 2
 }
 
+// LeetCode #118
 pub fn pascal_tri(rowId: u32, _row: Vec<u32>) -> Vec<u32> {
     // _row is ignored as we calculate the row from scratch
     if rowId == 0 {
@@ -400,6 +420,7 @@ struct Node {
 type Nodevalue = Rc<RefCell<Node>>;
 
 #[derive(Default)]
+// LeetCode #146
 struct LRUCache {
     hash: HashMap<i32, Nodevalue>,
     cap: usize,
@@ -407,6 +428,7 @@ struct LRUCache {
     tail: Option<Nodevalue>,
 }
 
+// LeetCode #3637
 pub fn is_trionic(nums: Vec<i32>) -> bool {
     let n = nums.len();
     let (mut p, mut q) = (0, n - 1);
@@ -427,6 +449,7 @@ pub fn is_trionic(nums: Vec<i32>) -> bool {
     }
     p < q
 }
+// LeetCode #5
 pub fn longest_palindrome(s: String) -> String {
     let s_b = s.as_bytes();
     let n = s.len() as i32;
@@ -463,6 +486,7 @@ pub fn longest_palindrome(s: String) -> String {
     String::from(lonstr)
 }
 
+// LeetCode #647
 pub fn countpalindrom(s: String) -> i32 {
     let mut hash = [0; 26];
     for i in s.bytes() {
@@ -487,6 +511,7 @@ pub fn countpalindrom(s: String) -> i32 {
     }
     dp0 + dp1
 }
+// LeetCode #1288
 pub fn remove_covered_intervals(mut intervals: Vec<Vec<i32>>) -> i32 {
     // O(n^2)
     // let mut ans = vec![];
@@ -522,6 +547,7 @@ pub fn remove_covered_intervals(mut intervals: Vec<Vec<i32>>) -> i32 {
     }
     count
 }
+// LeetCode#
 pub fn seconds_between_times(start_time: String, end_time: String) -> i32 {
     let secs = |s: &str| -> i32 {
         let parts: Vec<i32> = s.split(':').map(|n| n.parse().unwrap()).collect();
@@ -531,6 +557,7 @@ pub fn seconds_between_times(start_time: String, end_time: String) -> i32 {
     let end = secs(&end_time);
     (end - start).rem_euclid(86400)
 }
+// LeetCode #9
 pub fn is_palindrome(x: i32) -> bool {
     let num: Vec<i32> = x.to_string().bytes().map(|b| (b - b'0') as i32).collect();
     let (mut l, mut r) = (0, num.len() - 1);

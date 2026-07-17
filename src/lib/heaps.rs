@@ -2,6 +2,7 @@ use std::cmp::Reverse;
 use std::collections::{BinaryHeap, HashMap, VecDeque};
 
 
+// LeetCode #1046
 pub fn last_stone_weight(stones: Vec<i32>) -> i32 {
     let mut heap = BinaryHeap::from_iter(stones.into_iter());
     while heap.len() > 1 {
@@ -12,6 +13,7 @@ pub fn last_stone_weight(stones: Vec<i32>) -> i32 {
     }
     heap.pop().unwrap_or_default()
 }
+// LeetCode #215
 pub fn find_kth_largest(nums: Vec<i32>, k: i32) -> i32 {
     // let mut heap = BinaryHeap::from_iter(nums.into_iter());
     // for _ in 1..k {
@@ -29,6 +31,7 @@ pub fn find_kth_largest(nums: Vec<i32>, k: i32) -> i32 {
     }
     heap.pop().unwrap().0
 }
+// LeetCode #347
 pub fn top_k_frequent(nums: Vec<i32>, k: i32) -> Vec<i32> {
     //BinaryHeap Solution -- o(nlogk)
     // let mut hash = HashMap::new();
@@ -71,6 +74,7 @@ pub fn top_k_frequent(nums: Vec<i32>, k: i32) -> Vec<i32> {
     res
 }
 
+// LeetCode #973
 pub fn k_closest(points: Vec<Vec<i32>>, k: i32) -> Vec<Vec<i32>> {
     let mut heap = BinaryHeap::new();
     for i in points {
@@ -83,6 +87,7 @@ pub fn k_closest(points: Vec<Vec<i32>>, k: i32) -> Vec<Vec<i32>> {
     heap.into_iter().map(|(_, p)| p).collect()
 }
 
+// LeetCode #2812
 pub fn maximum_safeness_factor(grid: Vec<Vec<i32>>) -> i32 {
     let n = grid.len();
     let mut dist = vec![vec![i32::MAX; n]; n];
