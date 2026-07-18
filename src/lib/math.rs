@@ -18,3 +18,24 @@ pub fn sequential_digits(low: i32, high: i32) -> Vec<i32> {
 pub fn gcd_of_odd_even_sums(n: i32) -> i32 {
     n
 }
+// LeetCode #1979
+pub fn find_gcd(nums: Vec<i32>) -> i32 {
+    fn gcd(mut a: i32, mut b: i32) -> i32 {
+        while b != 0 {
+            let temp = b;
+            b = a % b;
+            a = temp;
+        }
+        a
+    }
+    let (mut m, mut n) = (i32::MIN, i32::MAX);
+    for i in nums {
+        if i > m {
+            m = i;
+        }
+        if i < n {
+            n = i;
+        }
+    }
+    gcd(m, n)
+}
