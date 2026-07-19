@@ -1,5 +1,3 @@
-use std::i32;
-
 // LeetCode #682
 pub fn cal_points(operations: vec<string>) -> i32 {
     let mut rec = vec![];
@@ -270,4 +268,69 @@ pub fn next_greater_elements(nums: Vec<i32>) -> Vec<i32> {
         cnt += 1;
     }
     gret_ele
+}
+
+// LeetCode #1081
+pub fn smallest_subsequence(s: String) -> String {
+    let bts = s.as_bytes();
+    let n = bts.len();
+    let mut bit_mask = vec![false; 26];
+    let mut cnt = vec![0; 26];
+    let mut monotonic = vec![];
+
+    for i in 0..n {
+        cnt[(bts[i] - b'a') as usize] += 1;
+    }
+
+    for i in bts {
+        let idx = (i - b'a') as usize;
+        if !bit_mask[idx] {
+            while !monotonic.is_empty() && monotonic[monotonic.len() - 1] > *i {
+                let top_idx = (monotonic[monotonic.len() - 1] - b'a') as usize;
+                if cnt[top_idx] > 0 {
+                    bit_mask[top_idx] = false;
+                    monotonic.pop();
+                } else {
+                    break;
+                }
+            }
+            bit_mask[idx] = true;
+            monotonic.push(*i);
+        }
+        cnt[idx] -= 1;
+    }
+
+    String::from_utf8(monotonic).expect("valid UTF-8")
+}
+//LeetCode 316 as last question
+pub fn remove_duplicate_letters(s: String) -> String {
+    let bts = s.as_bytes();
+    let n = bts.len();
+    let mut bit_mask = vec![false; 26];
+    let mut cnt = vec![0; 26];
+    let mut monotonic = vec![];
+
+    for i in 0..n {
+        cnt[(bts[i] - b'a') as usize] += 1;
+    }
+
+    for i in bts {
+        let idx = (i - b'a') as usize;
+        if !bit_mask[idx] {
+            while !monotonic.is_empty() && monotonic[monotonic.len() - 1] > *i {
+                let top_idx = (monotonic[monotonic.len() - 1] - b'a') as usize;
+                if cnt[top_idx] > 0 {
+                    bit_mask[top_idx] = false;
+                    monotonic.pop();
+                } else {
+                    break;
+                }
+            }
+            bit_mask[idx] = true;
+            monotonic.push(*i);
+        }
+        cnt[idx] -= 1;
+    }
+
+    String::from_utf8(monotonic).expect("valid UTF-8")
 }
