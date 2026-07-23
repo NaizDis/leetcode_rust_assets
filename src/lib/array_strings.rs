@@ -573,3 +573,49 @@ pub fn is_palindrome(x: i32) -> bool {
     }
     flag
 }
+
+//LeetCode #1260
+pub fn shift_grid(grid: Vec<Vec<i32>>, k: i32) -> Vec<Vec<i32>> {
+    let (m, n) = (grid.len(), grid[0].len());
+    let mut flat = grid.concat();
+    let cl = flat.len() as i32;
+    flat.rotate_right((k % cl) as usize);
+    let tt = flat.chunks(n).map(|v| v.to_vec()).collect();
+    tt
+}
+
+// LeetCode #3499
+pub fn max_active_sections_after_trade1(s: String) -> i32 {
+    let s = s.as_bytes();
+    let n = s.len();
+    let mut i = 0;
+    let mut blocks = vec![];
+
+    while i < n {
+        let curr = s[i];
+        let mut j = i;
+        while j < n && s[j] == curr {
+            j += 1;
+        }
+        blocks.push((curr == b'1', (j - i) as i32));
+        i = j
+    }
+
+    let total_one = blocks
+        .iter()
+        .filter(|(is_one, _)| *is_one)
+        .map(|(_, sz)| sz)
+        .sum();
+
+    if blocks.len() < 3 {
+        return total_one;
+    }
+
+    let mut max_gain = 0;
+    for i in 1..blocks.len() - 1 {
+        if blocks[i].0 && !blocks[i - 1].0 && !blocks[i + 1].0 {
+            max_gain = max_gain.max(blocks[i - 1].1 + blocks[i + 1].1);
+        }
+    }
+    total_one + max_gain
+}
