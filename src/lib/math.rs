@@ -60,7 +60,7 @@ pub fn sum_and_multiply(n: i32) -> i64 {
 }
 
 //LeetCode #3513
-pub fn unique_xor_triplets(nums: Vec<i32>) -> i32 {
+pub fn unique_xor_triplets1(nums: Vec<i32>) -> i32 {
     // let n = nums.len();
     // use std::collections::HashSet;
     // let mut stt = HashSet::new();
@@ -83,4 +83,48 @@ pub fn unique_xor_triplets(nums: Vec<i32>) -> i32 {
     } else {
         return 2i32.pow(n.ilog2() + 1);
     }
+}
+
+//LeetCode #3514
+pub fn unique_xor_triplets(nums: Vec<i32>) -> i32 {
+    let n = nums.len();
+    let max_xor = 2048;
+
+    let mut pair_xor = vec![false; max_xor];
+    let mut trip_xor = vec![false; max_xor];
+
+    for i in 0..n {
+        for j in i..n {
+            pair_xor[(nums[i] ^ nums[j]) as usize] = true;
+        }
+    }
+
+    for val in 0..max_xor {
+        if !pair_xor[val] {
+            continue;
+        }
+        for x in &nums {
+            trip_xor[(x ^ val as i32) as usize] = true;
+        }
+    }
+
+    let mut cnt = 0;
+    for i in trip_xor {
+        if i {
+            cnt += 1
+        };
+    }
+    cnt
+}
+
+//Leetocde 3536
+pub fn max_product(n: i32) -> i32 {
+    let mut digits = vec![];
+    let mut temp = n;
+    while temp != 0 {
+        digits.push(temp % 10);
+        temp /= 10;
+    }
+    digits.sort();
+    digits[digits.len() - 1] * digits[digits.len() - 2]
 }
