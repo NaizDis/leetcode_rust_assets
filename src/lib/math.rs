@@ -128,3 +128,13 @@ pub fn max_product(n: i32) -> i32 {
     digits.sort();
     digits[digits.len() - 1] * digits[digits.len() - 2]
 }
+
+//Leetocde #628
+pub fn maximum_product(nums: Vec<i32>) -> i32 {
+    let mut nums_sort = nums.clone();
+    nums_sort.sort();
+    let n = nums.len();
+    let neg_max = nums_sort[0] * nums_sort[1] * nums_sort[n - 1];
+    let pos_max = nums_sort[n - 1] * nums_sort[n - 2] * nums_sort[n - 3];
+    neg_max.max(pos_max)
+}
