@@ -138,3 +138,10 @@ pub fn maximum_product(nums: Vec<i32>) -> i32 {
     let pos_max = nums_sort[n - 1] * nums_sort[n - 2] * nums_sort[n - 3];
     neg_max.max(pos_max)
 }
+
+//Leetocde #3041
+pub fn minimum_pushes(word: String) -> i32 {
+    let quo = word.len() / 8;
+    let rem = word.len() % 8;
+    ((4 * quo + rem) * (quo + 1)) as _
+}
