@@ -237,3 +237,27 @@ pub fn array_rank_transform(arr: Vec<i32>) -> Vec<i32> {
 
 }
 
+//LeetCode #2897
+pub fn max_sum(nums: Vec<i32>, k: i32) -> i32 {
+    const MOD: i64 = 1_000_000_007;
+    let mut c = [0; 31];
+    for &x in &nums {
+        for b in 0..31 {
+            if (x >> b) & 1 == 1 {
+                c[b] += 1;
+            }
+        }
+    }
+    let mut ans: i64 = 0;
+    for _ in 0..k {
+        let mut v: i64 = 0;
+        for b in (0..31).rev() {
+            if c[b] > 0 {
+                v |= 1i64 << b;
+                c[b] -= 1;
+            }
+        }
+        ans = (ans + v % MOD * (v % MOD)) % MOD;
+    }
+    ans as i32
+}

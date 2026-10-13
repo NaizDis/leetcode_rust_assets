@@ -354,3 +354,31 @@ pub fn count_complete_components(n: i32, edges: Vec<Vec<i32>>) -> i32 {
     }
     ans
 }
+
+//LeetCode #3310
+pub fn remaining_methods(n: i32, k: i32, invocations: Vec<Vec<i32>>) -> Vec<i32> {
+    let mut invok = vec![vec![]; n as usize]; // ai -> [bi]
+    for e in &invocations {
+        invok[e[0] as usize].push(e[1]);
+    }
+
+    use std::collections::HashSet;
+    let mut suspicious: HashSet<i32> = HashSet::new();
+    let mut stack = vec![k];
+    while let Some(m) = stack.pop() {
+        if !suspicious.insert(m) {
+            continue;
+        }
+        for &nx in &invok[m as usize] {
+            stack.push(nx);
+        }
+    }
+
+    for e in &invocations {
+        if suspicious.contains(&e[1]) && !suspicious.contains(&e[0]) {
+            return (0..n).collect(); // cannot remove -> remove none
+        }
+    }
+
+    (0..n).filter(|m| !suspicious.contains(m)).collect()
+}

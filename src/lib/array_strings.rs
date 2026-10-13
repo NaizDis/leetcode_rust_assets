@@ -1,3 +1,4 @@
+use core::num;
 use std::{
     cell::RefCell,
     cmp::{self, Ordering},
@@ -618,4 +619,17 @@ pub fn max_active_sections_after_trade1(s: String) -> i32 {
         }
     }
     total_one + max_gain
+}
+pub fn max_alternating_sum(mut nums: Vec<i32>) -> i64 {
+    nums.iter().map(|&a| a.abs());
+    nums.sort_by_key(|&a| (a as i64) * (a as i64));
+    let n = nums.len();
+    let mut sum: i64 = 0;
+    for i in 0..n / 2 {
+        sum -= (nums[i] as i64) * (nums[i] as i64);
+    }
+    for i in n / 2..n {
+        sum += (nums[i] as i64) * (nums[i] as i64);
+    }
+    sum
 }

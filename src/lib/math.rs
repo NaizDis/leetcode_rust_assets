@@ -145,3 +145,32 @@ pub fn minimum_pushes(word: String) -> i32 {
     let rem = word.len() % 8;
     ((4 * quo + rem) * (quo + 1)) as _
 }
+
+//Leetocde #3345
+pub fn smallest_number(n: i32, t: i32) -> i32 {
+    let mut smallest = n;
+    loop {
+        let mut temp = smallest;
+        let mut prod: i64 = 1;
+        while temp > 0 {
+            prod *= (temp % 10) as i64;
+            temp /= 10;
+        }
+        if prod % t as i64 == 0 {
+            return smallest;
+        }
+        smallest += 1;
+    }
+}
+
+//Leetocde #2778
+pub fn sum_of_squares(nums: Vec<i32>) -> i32 {
+    let mut sum = 0;
+    let n = nums.len();
+    for i in 0..n {
+        if n % (i + 1) == 0 {
+            sum += nums[i] * nums[i];
+        }
+    }
+    sum
+}
