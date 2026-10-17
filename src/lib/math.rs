@@ -174,3 +174,40 @@ pub fn sum_of_squares(nums: Vec<i32>) -> i32 {
     }
     sum
 }
+// Leetocde #3723
+pub fn max_sum_of_squares(num: i32, sum: i32) -> String {
+    // if sum > 9 * num {
+    //     return String::from("");
+    // }
+    // let amt9 = sum / 9;
+    // let md = sum % 9;
+    // let mut ans = "9".repeat(amt9 as usize);
+    // let mut after9 = num - amt9;
+    // if after9 <= 0 && md > 0 {
+    //     return String::from("");
+    // }
+    // if md == 0 && after9 <= 0 {
+    //     return ans;
+    // }
+    // ans.push_str(&md.to_string());
+    // after9 -= 1;
+    //
+    // for _ in 0..after9 {
+    //     ans.push_str("0");
+    // }
+    // ans
+
+    //Refactor
+    if sum > 9 * num {
+        return String::new();
+    }
+    let mut ans = "9".repeat((sum / 9) as usize);
+    let rem = (sum % 9) as u8;
+    if rem > 0 {
+        ans.push((b'0' + rem) as char);
+    }
+    while ans.len() < num as usize {
+        ans.push('0');
+    }
+    ans
+}

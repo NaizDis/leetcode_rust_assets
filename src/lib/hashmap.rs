@@ -1,3 +1,4 @@
+use core::num;
 use std::{
     collections::{HashMap, HashSet},
     usize,
@@ -129,8 +130,8 @@ pub fn longest_consecutive(mut nums: Vec<i32>) -> i32 {
 //Simpler Use take_while And Count
 // LeetCode #128
 pub fn longest_consecutive2(nums: Vec<i32>) -> i32 {
-    let num_set: HashSet<_> = nums.into_iter().collect();
-    let mut map :HashMap<> = nums.into_iter().
+    let num_set: HashSet<_> = nums.iter().copied().collect();
+    let mut map: HashMap<i32, i32> = HashMap::new();
     let mut ans = 0;
     for &num in &num_set {
         if !num_set.contains(&(num - 1)) {
@@ -148,21 +149,20 @@ pub fn maximum_length(nums: Vec<i32>) -> i32 {
     for i in &nums {
         map.entry(i).and_modify(|e| *e += 1).or_insert(1);
     }
-    for (&n,c) in map.into_iter(){
-        if n==1{
-            ans = ans.max(c - (c %2==0) as i64);
-        }
-        else if c>1 {
+    for (&n, c) in map.clone().into_iter() {
+        if n == 1 {
+            ans = ans.max(c - (c % 2 == 0) as i64);
+        } else if c > 1 {
             let mut n_ans = 1;
-            let mut n = n*n;
-            while let  Some(&c)=map.get(&n){
-                n_ans+=2;
-                if c==1{
+            let mut n = n * n;
+            while let Some(&c) = map.get(&n) {
+                n_ans += 2;
+                if c == 1 {
                     break;
                 }
-                n*=n;
+                n *= n;
             }
-            ans= ans.max(n_ans);
+            ans = ans.max(n_ans);
         }
     }
     ans as _
@@ -189,17 +189,17 @@ pub fn number_of_substrings(s: String) -> i32 {
     // ans as _
 
     let mut ans = 0;
-    let mut left =0;
-    let mut s_hash=[0;3];
+    let mut left = 0;
+    let mut s_hash = [0; 3];
     let s_b = s.as_bytes();
     let n = s_b.len();
 
-    for right in 0..n{
-        s_hash[(s_b[right]-b'a') as usize]+=1;
-        while s_hash[0]>0 && s_hash[1]>0 && s_hash[2]>0{
-            ans+=n-right;
-            s_hash[(s_b[left]-b'a') as usize]-=1;
-            left+=1;
+    for right in 0..n {
+        s_hash[(s_b[right] - b'a') as usize] += 1;
+        while s_hash[0] > 0 && s_hash[1] > 0 && s_hash[2] > 0 {
+            ans += n - right;
+            s_hash[(s_b[left] - b'a') as usize] -= 1;
+            left += 1;
         }
     }
     ans as _
@@ -207,7 +207,7 @@ pub fn number_of_substrings(s: String) -> i32 {
 // LeetCode #1331
 pub fn array_rank_transform(arr: Vec<i32>) -> Vec<i32> {
     let n = arr.len();
-    if n==0{
+    if n == 0 {
         return vec![];
     }
     // let mut map = HashMap::new();
@@ -230,11 +230,10 @@ pub fn array_rank_transform(arr: Vec<i32>) -> Vec<i32> {
     let mut arrSort = arr.clone();
     arrSort.sort_unstable();
     arrSort.dedup();
-    for i in &arr{
-        ans.push((arrSort.binary_search(i).unwrap()+1) as i32);
+    for i in &arr {
+        ans.push((arrSort.binary_search(i).unwrap() + 1) as i32);
     }
     ans
-
 }
 
 //LeetCode #2897
@@ -260,4 +259,56 @@ pub fn max_sum(nums: Vec<i32>, k: i32) -> i32 {
         ans = (ans + v % MOD * (v % MOD)) % MOD;
     }
     ans as i32
+}
+
+//LeetCode 2913
+pub fn sum_counts(nums: Vec<i32>) -> i32 {
+    let n = nums.len();
+    let mut ans = 0;
+    let md = 1_000_000_007;
+    use ::std::collections::HashSet;
+    let mut stt = HashSet::new();
+    for i in 0..n {
+        stt.clear();
+        for j in i..n {
+            stt.insert(nums[j]);
+            ans += stt.len().pow(2) as i64;
+        }
+    }
+    (ans % md) as i32
+}
+
+//LeetCode 3551
+pub fn min_swaps(nums: Vec<i32>) -> i32 {
+    let n = nums.len();
+    let mut digi_sum = vec![0; n];
+    for i in 0..n {
+        let mut tmp = nums[i];
+        let mut sum = 0;
+        while tmp > 0 {
+            sum += tmp % 10;
+            tmp /= 10;
+        }
+        digi_sum[i] = sum;
+    }
+    let mut indices: Vec<usize> = (0..n).collect();
+    indices.sort_by_key(|&i| (digi_sum[i], nums[i]));
+
+    let mut target_pos = vec![0; n];
+    for (pos, &idx) in indices.iter().enumerate() {
+        target_pos[idx] = pos;
+    }
+    let mut visited = vec![false; n];
+    let mut cycles = 0;
+    for i in 0..n {
+        if !visited[i] {
+            cycles += 1;
+            let mut j = i;
+            while !visited[j] {
+                visited[j] = true;
+                j = target_pos[j];
+            }
+        }
+    }
+    n as i32 - cycles
 }

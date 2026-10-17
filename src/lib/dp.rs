@@ -169,3 +169,19 @@ pub fn subsequence_pair_count(nums: Vec<i32>) -> i32 {
     }
     ans as i32
 }
+//LeetCode #221
+pub fn maximal_square(matrix: Vec<Vec<char>>) -> i32 {
+    let (m, n) = (matrix.len(), matrix[0].len());
+    let mut max_area = 0;
+    let mut dp = vec![vec![0; n + 1]; m + 1];
+    for i in 0..m {
+        for j in 0..n {
+            if matrix[i][j] == '1' {
+                dp[i + 1][j + 1] =
+                    std::cmp::min(dp[i][j], std::cmp::min(dp[i + 1][j], dp[i][j + 1])) + 1;
+                max_area = std::cmp::max(max_area, dp[i + 1][j + 1]);
+            }
+        }
+    }
+    max_area * max_area
+}
