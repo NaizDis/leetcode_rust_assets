@@ -633,3 +633,14 @@ pub fn max_alternating_sum(mut nums: Vec<i32>) -> i64 {
     }
     sum
 }
+//LeetCode 2089
+pub fn target_indices(mut nums: Vec<i32>, target: i32) -> Vec<i32> {
+    let mut ans = Vec::new();
+    nums.sort_unstable();
+    for i in 0..nums.len() {
+        if nums[i] == target {
+            ans.push(i as i32);
+        }
+    }
+    ans
+}

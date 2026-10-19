@@ -1,7 +1,6 @@
 use std::cmp::Reverse;
 use std::collections::{BinaryHeap, HashMap, VecDeque};
 
-
 // LeetCode #1046
 pub fn last_stone_weight(stones: Vec<i32>) -> i32 {
     let mut heap = BinaryHeap::from_iter(stones.into_iter());
@@ -141,4 +140,45 @@ pub fn maximum_safeness_factor(grid: Vec<Vec<i32>>) -> i32 {
     }
 
     0
+}
+
+//LeetCode 2333
+pub fn min_sum_square_diff(nums1: Vec<i32>, nums2: Vec<i32>, k1: i32, k2: i32) -> i64 {
+    let mut budget = k1 as i64 + k2 as i64;
+
+    let diffs: Vec<i32> = nums1
+        .iter()
+        .zip(nums2.iter())
+        .map(|(&a, &b)| (a - b).abs())
+        .collect();
+    let max_diff = diffs.iter().copied().max().unwrap_or(0) as usize;
+
+    let mut freq = vec![0i64; max_diff + 1];
+    for &d in &diffs {
+        freq[d as usize] += 1;
+    }
+
+    for level in (1..=max_diff).rev() {
+        let count = freq[level];
+        if count == 0 {
+            continue;
+        }
+        if count <= budget {
+            budget -= count;
+            freq[level - 1] += count;
+            freq[level] = 0;
+        } else {
+            freq[level - 1] += budget;
+            freq[level] -= budget;
+            budget = 0;
+            break;
+        }
+    }
+
+    let mut ans: i64 = 0;
+    for level in 0..=max_diff {
+        let d = level as i64;
+        ans += freq[level] * d * d;
+    }
+    ans
 }

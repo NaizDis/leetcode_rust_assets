@@ -286,3 +286,58 @@ pub fn gcd_values(nums: Vec<i32>, queries: Vec<i64>) -> Vec<i32> {
 
     ans
 }
+
+//LeetCode 1569
+pub fn num_of_ways(nums: Vec<i32>) -> i32 {
+    const MOD: i64 = 1_000_000_007;
+
+    fn power(mut base: i64, mut exp: i64) -> i64 {
+        let mut result = 1;
+        while exp > 0 {
+            if exp & 1 == 1 {
+                result = result * base % MOD;
+            }
+            base = base * base % MOD;
+            exp >>= 1;
+        }
+        result
+    }
+
+    fn factorials(n: usize) -> (Vec<i64>, Vec<i64>) {
+        let mut fact = vec![1i64; n + 1];
+        for i in 1..=n {
+            fact[i] = fact[i - 1] * i as i64 % MOD;
+        }
+        let mut inv_fact = vec![1i64; n + 1];
+        inv_fact[n] = power(fact[n], MOD - 2);
+        for i in (1..=n).rev() {
+            inv_fact[i - 1] = inv_fact[i] * i as i64 % MOD;
+        }
+        (fact, inv_fact)
+    }
+
+    fn count_orders(sequence: &[i32], fact: &[i64], inv_fact: &[i64]) -> i64 {
+        if sequence.len() <= 1 {
+            return 1;
+        }
+        let root = sequence[0];
+        let smaller: Vec<i32> = sequence[1..]
+            .iter()
+            .copied()
+            .filter(|x| *x < root)
+            .collect();
+        let bigger: Vec<i32> = sequence[1..]
+            .iter()
+            .copied()
+            .filter(|x| *x > root)
+            .collect();
+        let mixes = fact[smaller.len() + bigger.len()] * inv_fact[smaller.len()] % MOD
+            * inv_fact[bigger.len()]
+            % MOD;
+        mixes * count_orders(&smaller, fact, inv_fact) % MOD * count_orders(&bigger, fact, inv_fact)
+            % MOD
+    }
+
+    let (fact, inv_fact) = factorials(nums.len());
+    ((count_orders(&nums, &fact, &inv_fact) - 1 + MOD) % MOD) as i32
+}
