@@ -644,3 +644,39 @@ pub fn target_indices(mut nums: Vec<i32>, target: i32) -> Vec<i32> {
     }
     ans
 }
+
+//LeetCode 4
+pub fn find_median_sorted_arrays(nums1: Vec<i32>, nums2: Vec<i32>) -> f64 {
+    let (a, b) = if nums1.len() > nums2.len() {
+        (nums2, nums1)
+    } else {
+        (nums1, nums2)
+    };
+    let (m, n) = (a.len(), b.len());
+    let half = (m + n + 1) / 2;
+    let (mut lo, mut hi) = (0, m);
+
+    while lo <= hi {
+        let px = (lo + hi) / 2;
+        let py = half - px;
+
+        let max_left_a = if px == 0 { i32::MIN } else { a[px - 1] };
+        let min_right_a = if px == m { i32::MAX } else { a[px] };
+        let max_left_b = if py == 0 { i32::MIN } else { b[py - 1] };
+        let min_right_b = if py == n { i32::MAX } else { b[py] };
+
+        if max_left_a <= min_right_b && max_left_b <= min_right_a {
+            let max_left = max_left_a.max(max_left_b);
+            if (m + n) % 2 == 1 {
+                return max_left as f64;
+            }
+            let min_right = min_right_a.min(min_right_b);
+            return (max_left as f64 + min_right as f64) / 2.0;
+        } else if max_left_a > min_right_b {
+            hi = px - 1;
+        } else {
+            lo = px + 1;
+        }
+    }
+    0.0
+}

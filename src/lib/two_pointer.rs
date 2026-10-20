@@ -192,3 +192,21 @@ pub fn gcd_sum(nums: Vec<i32>) -> i64 {
     }
     ans as _
 }
+
+//LeetCode 287
+pub fn find_duplicate(nums: Vec<i32>) -> i32 {
+    let (mut f, mut s) = (nums[0], nums[0]);
+    loop {
+        s = nums[s as usize];
+        f = nums[nums[f as usize] as usize];
+        if s == f {
+            break;
+        }
+    }
+    s = nums[0];
+    while f != s {
+        s = nums[s as usize];
+        f = nums[f as usize];
+    }
+    s
+}

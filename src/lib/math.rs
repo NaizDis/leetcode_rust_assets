@@ -211,3 +211,104 @@ pub fn max_sum_of_squares(num: i32, sum: i32) -> String {
     }
     ans
 }
+
+//LeetCode 3886
+pub fn sortable_integers(nums: Vec<i32>) -> i32 {
+    // O(k^2)
+    // let n = nums.len();
+    // if nums.is_sorted() {
+    //     return (1..=n).filter(|d| n % d == 0).map(|d| d as i32).sum();
+    // }
+    // let mut poss_k = Vec::new();
+    // let mut ans = 0;
+    // for i in 2..=n {
+    //     if n % i == 0 {
+    //         poss_k.push(i);
+    //     }
+    // }
+    // let mut sort_array = nums.clone();
+    // sort_array.sort_unstable();
+    // for k in poss_k {
+    //     let mut flag = true;
+    //     let mut i = 0;
+    //     while i < n {
+    //         let block = &nums[i..i + k];
+    //         let target = &sort_array[i..i + k];
+    //
+    //         let mut matched = false;
+    //         for s in 0..k {
+    //             if block[s] != target[0] {
+    //                 continue;
+    //             }
+    //             if (0..k).all(|t| block[(s + t) % k] == target[t]) {
+    //                 matched = true;
+    //                 break;
+    //             }
+    //         }
+    //         if !matched {
+    //             flag = false;
+    //             break;
+    //         }
+    //         i += k;
+    //     }
+    //     if flag {
+    //         ans += k;
+    //     }
+    // }
+    // ans as i32
+    //
+    //
+    // Optimized o(n)
+    let n = nums.len();
+    let mut sorted = nums.clone();
+    sorted.sort_unstable();
+
+    let mut ans = 0i32;
+    for k in 1..=n {
+        if n % k != 0 {
+            continue;
+        }
+        let mut ok = true;
+        let mut start = 0;
+        while start < n {
+            let block = &nums[start..start + k];
+            let target = &sorted[start..start + k];
+
+            let mut shift = 0usize;
+            let mut descents = 0usize;
+            for i in 0..k {
+                let next = if i + 1 == k { 0 } else { i + 1 };
+                if block[i] > block[next] {
+                    descents += 1;
+                    shift = next;
+                }
+            }
+            if descents > 1 {
+                ok = false;
+                break;
+            }
+
+            let mut matches = true;
+            for t in 0..k {
+                let mut idx = shift + t;
+                if idx >= k {
+                    idx -= k;
+                }
+                if block[idx] != target[t] {
+                    matches = false;
+                    break;
+                }
+            }
+            if !matches {
+                ok = false;
+                break;
+            }
+
+            start += k;
+        }
+        if ok {
+            ans += k as i32;
+        }
+    }
+    ans as i32
+}
